@@ -1,5 +1,5 @@
-const asyncHandler = require('express-async-handler')
-const sastrawi = require("sastrawijs");
+const asyncHandler = require('express-async-handler') //For future development if API is needed!
+const sastrawi = require("sastrawijs"); 
 const stringSimilarity = require("string-similarity")
 const { removeStopwords, ind } = require('stopword')
 
@@ -14,8 +14,10 @@ function textProcessing(text){
         stemmed.push(stemmer.stem(words[i]))
     }
 
-    //console.log(removeStopwords(stemmed, ind))
-    return removeStopwords(stemmed, ind)
+    let cleanedWords = removeStopwords(stemmed, ind)
+    let processedWords = [...new Set(cleanedWords)]
+
+    return processedWords
 }
 
 function keywordMatching(keyword, child){
