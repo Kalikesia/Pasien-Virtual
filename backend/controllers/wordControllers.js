@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler') //For future development i
 const sastrawi = require("sastrawijs"); 
 const stringSimilarity = require("string-similarity")
 const { removeStopwords, ind } = require('stopword')
+const Word = require('../models/wordModel')
 
 function textProcessing(text){
     let stemmed = []
@@ -59,6 +60,65 @@ const compareWord = asyncHandler(async (req, res) => {
     }
 })
 
+const findBestMatch = asyncHandler(async (req, res) => {
+    const { master, keyword, child } = req.body
+    let processedMasterText = textProcessing(master)
+    let processedChildText = textProcessing(child)
+    let processedKeyword = textProcessing(keyword)
+
+    let keywordChecker = keywordMatching(processedKeyword, processedChildText)
+
+    const wordMaster = await Word.find()
+    let masterArray = []
+    for(let i = 0; i < wordMaster.length; i++){
+        masterArray.push(textProcessing(wordMaster[i]["master"]).join(" "))
+        for(let j = 0; j < wordMaster[i]["varians"].length; j++){
+            masterArray.push(textProcessing(wordMaster[i]["varians"][j]).join(" "))
+        }
+    }
+
+    console.log(masterArray)
+
+    if(master && keyword && child){
+        const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
+        res.status(201).json({
+            bestMatch
+        })
+    } else{
+        res.status(400).json({
+            message: "Please Fill All the Form!"
+        })
+    }
+})
+
+const registerMaster = asyncHandler(async (req, res) => {
+    const {
+        category,
+        master,
+        varians,
+        keyword
+    } = req.body
+
+    const word = await Word.create({
+        category,
+        master,
+        varians,
+        keyword
+    })
+
+    if(word){
+        res.status(201).json({
+            word
+        })
+    } else{
+        res.status(400).json({
+            message: "Please Fill All The Form!"
+        })
+    }
+})
+
 module.exports = {
-    compareWord
+    compareWord,
+    registerMaster,
+    findBestMatch
 }
