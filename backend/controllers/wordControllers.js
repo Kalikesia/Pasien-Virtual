@@ -84,11 +84,18 @@ const findBestMatch = asyncHandler(async (req, res) => {
         res.status(201).json({
             bestMatch
         })
+        //console.log(bestMatch["bestMatch"]["target"])
+        const findCategory = await Word.findOne({
+            varians: bestMatch["bestMatch"]["target"]
+        })
+        console.log(findCategory["category"])
     } else{
         res.status(400).json({
             message: "Please Fill All the Form!"
         })
     }
+
+
 })
 
 const registerMaster = asyncHandler(async (req, res) => {
