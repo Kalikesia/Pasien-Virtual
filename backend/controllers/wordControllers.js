@@ -60,6 +60,14 @@ const compareWord = asyncHandler(async (req, res) => {
     }
 })
 
+const displayDatabase = asyncHandler(async (req, res) => {
+    const data = await Word.find()
+
+    res.status(200).json({
+        data
+    })
+})
+
 const findBestMatch = asyncHandler(async (req, res) => {
     const { master, keyword, child } = req.body
     let processedMasterText = textProcessing(master)
@@ -71,9 +79,9 @@ const findBestMatch = asyncHandler(async (req, res) => {
     const wordMaster = await Word.find()
     let masterArray = []
     for(let i = 0; i < wordMaster.length; i++){
-        masterArray.push(textProcessing(wordMaster[i]["master"]).join(" "))
+        masterArray.push(wordMaster[i]["master"])
         for(let j = 0; j < wordMaster[i]["varians"].length; j++){
-            masterArray.push(textProcessing(wordMaster[i]["varians"][j]).join(" "))
+            masterArray.push(wordMaster[i]["varians"][j])
         }
     }
 
@@ -81,14 +89,19 @@ const findBestMatch = asyncHandler(async (req, res) => {
 
     if(master && keyword && child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
-        res.status(201).json({
-            bestMatch
-        })
-        //console.log(bestMatch["bestMatch"]["target"])
-        const findCategory = await Word.findOne({
+        let findCategory = await Word.findOne({
             varians: bestMatch["bestMatch"]["target"]
         })
-        console.log(findCategory["category"])
+        if(findCategory === null){
+            findCategory = await Word.findOne({
+                master: bestMatch["bestMatch"]["target"]
+            })
+        }
+        res.status(201).json({
+            message: `Kata '${bestMatch["bestMatch"]["target"]}' terletak pada Kategori: '${findCategory["category"]}' \n dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}%`
+        })
+        console.log(bestMatch["bestMatch"])
+        //console.log(findCategory["category"])
     } else{
         res.status(400).json({
             message: "Please Fill All the Form!"
@@ -106,13 +119,17 @@ const registerMaster = asyncHandler(async (req, res) => {
         keyword
     } = req.body
 
+    wordProcess = []
+    for(let i = 0; i < varians.length; i++){
+        wordProcess.push(textProcessing(varians[i]).join(" "))
+    }
+
     const word = await Word.create({
         category,
         master,
-        varians,
+        varians: wordProcess,
         keyword
     })
-
     if(word){
         res.status(201).json({
             word
@@ -127,5 +144,6 @@ const registerMaster = asyncHandler(async (req, res) => {
 module.exports = {
     compareWord,
     registerMaster,
-    findBestMatch
+    findBestMatch,
+    displayDatabase
 }
