@@ -116,7 +116,8 @@ const registerMaster = asyncHandler(async (req, res) => {
         category,
         master,
         varians,
-        keyword
+        keyword,
+        position
     } = req.body
 
     wordProcess = []
@@ -128,7 +129,8 @@ const registerMaster = asyncHandler(async (req, res) => {
         category,
         master,
         varians: wordProcess,
-        keyword
+        keyword,
+        position
     })
     if(word){
         res.status(201).json({
