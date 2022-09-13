@@ -98,7 +98,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
             })
         }
         res.status(201).json({
-            message: `Kata '${bestMatch["bestMatch"]["target"]}' terletak pada Kategori: '${findCategory["category"]}' \n dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}%`
+            message: `Kata '${bestMatch["bestMatch"]["target"]}' terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% yang terletak pada posisi ${findCategory["position"]}`
         })
         console.log(bestMatch["bestMatch"])
         //console.log(findCategory["category"])
