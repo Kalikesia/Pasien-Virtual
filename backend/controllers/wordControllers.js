@@ -69,12 +69,12 @@ const displayDatabase = asyncHandler(async (req, res) => {
 })
 
 const findBestMatch = asyncHandler(async (req, res) => {
-    const { master, keyword, child } = req.body
-    let processedMasterText = textProcessing(master)
+    //const { master, keyword, child } = req.body
+    //let processedMasterText = textProcessing(master)
     let processedChildText = textProcessing(child)
     let processedKeyword = textProcessing(keyword)
 
-    let keywordChecker = keywordMatching(processedKeyword, processedChildText)
+    //let keywordChecker = keywordMatching(processedKeyword, processedChildText)
 
     const wordMaster = await Word.find()
     let masterArray = []
