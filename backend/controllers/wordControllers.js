@@ -98,7 +98,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
             })
         }
         res.status(201).json({
-            message: `Kata '${bestMatch["bestMatch"]["target"]}' terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% yang terletak pada posisi ${findCategory["position"]}`
+            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`
         })
         console.log(bestMatch["bestMatch"])
         //console.log(findCategory["category"])
@@ -120,15 +120,17 @@ const registerMaster = asyncHandler(async (req, res) => {
         position
     } = req.body
 
-    wordProcess = []
+    cleanedWords = []
     for(let i = 0; i < varians.length; i++){
-        wordProcess.push(textProcessing(varians[i]).join(" "))
+        cleanedWords.push(textProcessing(varians[i]).join(" "))
     }
+
+    let processedWord = [...new Set(cleanedWords)]
 
     const word = await Word.create({
         category,
         master,
-        varians: wordProcess,
+        varians: processedWord,
         keyword,
         position
     })
