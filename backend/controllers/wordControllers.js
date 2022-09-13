@@ -87,7 +87,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
 
     console.log(masterArray)
 
-    if(master && keyword && child){
+    if(keyword && child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
         let findCategory = await Word.findOne({
             varians: bestMatch["bestMatch"]["target"]
