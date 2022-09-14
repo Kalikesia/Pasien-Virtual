@@ -69,10 +69,10 @@ const displayDatabase = asyncHandler(async (req, res) => {
 })
 
 const findBestMatch = asyncHandler(async (req, res) => {
-    const { keyword, child } = req.body
+    const { child } = req.body
     //let processedMasterText = textProcessing(master)
     let processedChildText = textProcessing(child)
-    let processedKeyword = textProcessing(keyword)
+    //let processedKeyword = textProcessing(keyword)
 
     //let keywordChecker = keywordMatching(processedKeyword, processedChildText)
 
