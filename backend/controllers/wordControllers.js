@@ -150,7 +150,7 @@ const deleteMaster = asyncHandler(async (req, res) => {
     if(id){
         const deleteID = await Word.findById(id)
         if(deleteID){
-            await Word.remove()
+            await deleteID.remove()
             res.status(200).json({
                 message: `Master with id: ${id} Has Been Removed!`
             })
