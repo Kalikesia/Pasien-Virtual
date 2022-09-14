@@ -178,7 +178,7 @@ const updateMaster = asyncHandler(async (req, res) => {
             updateID.keyword = keyword
             await updateID.save()
             res.status(200).json({
-                message: `Master ID: ${id} Has Been Updated With ${keyword} as the New Keyword`
+                message: `Master ID: ${id} Has Been Updated With '${keyword}' as the New Keyword`
             })
         } else{
             res.status(200).json({
