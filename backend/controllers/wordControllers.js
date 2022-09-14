@@ -166,10 +166,37 @@ const deleteMaster = asyncHandler(async (req, res) => {
     }
 })
 
+const updateMaster = asyncHandler(async (req, res) => {
+    const id = req.params.id
+    const {
+        keyword
+    } = req.body
+
+    if(id && keyword){
+        const updateID = await Word.findById(id)
+        if(updateID){
+            updateID.keyword = keyword
+            await updateID.save()
+            res.status(200).json({
+                message: `Master ID: ${id} Has Been Updated With ${keyword} as the New Keyword`
+            })
+        } else{
+            res.status(200).json({
+                message: "Something Went Very Wrong!"
+            })
+        }
+    } else {
+        res.status(404).json({
+            message: `Please Fill All the Form!`
+        })
+    }
+})
+
 module.exports = {
     compareWord,
     registerMaster,
     findBestMatch,
     displayDatabase,
-    deleteMaster
+    deleteMaster,
+    updateMaster
 }
