@@ -145,9 +145,31 @@ const registerMaster = asyncHandler(async (req, res) => {
     }
 })
 
+const deleteMaster = asyncHandler(async (req, res) => {
+    const id = req.params.id
+    if(id){
+        const deleteID = await Word.findById(id)
+        if(deleteID){
+            await Word.remove()
+            res.status(200).json({
+                message: `Master with id: ${id} Has Been Removed!`
+            })
+        } else{
+            res.status(200).json({
+                message: "Something Went Very Wrong!"
+            })
+        }
+    } else{
+        res.status(404).json({
+            message: "Parameter is Needed for This Command!"
+        })
+    }
+})
+
 module.exports = {
     compareWord,
     registerMaster,
     findBestMatch,
-    displayDatabase
+    displayDatabase,
+    deleteMaster
 }
