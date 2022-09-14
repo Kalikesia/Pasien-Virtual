@@ -74,6 +74,8 @@ const findBestMatch = asyncHandler(async (req, res) => {
     let processedChildText = textProcessing(child)
     //let processedKeyword = textProcessing(keyword)
 
+    console.log("child word is" + processedChildText)
+
     //let keywordChecker = keywordMatching(processedKeyword, processedChildText)
 
     const wordMaster = await Word.find()
