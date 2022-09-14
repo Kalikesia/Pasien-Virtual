@@ -126,10 +126,11 @@ const registerMaster = asyncHandler(async (req, res) => {
     }
 
     let processedWord = [...new Set(cleanedWords)]
+    let processedMaster = textProcessing(master).join(" ")
 
     const word = await Word.create({
         category,
-        master,
+        master: processedMaster,
         varians: processedWord,
         keyword,
         position
