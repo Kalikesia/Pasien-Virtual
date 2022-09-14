@@ -15,7 +15,7 @@ const wordSchema = mongoose.Schema({
     },
     keyword: {
         type: String,
-        required: true
+        required: false
     },
     position: {
         type: Number,
