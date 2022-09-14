@@ -15,6 +15,7 @@ const wordSchema = mongoose.Schema({
     },
     keyword: {
         type: String,
+        default: "",
         required: false
     },
     position: {
