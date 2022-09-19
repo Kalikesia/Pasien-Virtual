@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler') //For future development if API is needed!
 const sastrawi = require("sastrawijs"); 
 const stringSimilarity = require("string-similarity")
-const { removeStopwords, ind } = require('stopword')
+const { removeStopwords } = require('stopword')
+const { ind } = require('../utils/dictionary')
 const Word = require('../models/wordModel')
 
 function textProcessing(text){
