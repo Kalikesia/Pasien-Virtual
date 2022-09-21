@@ -32,6 +32,7 @@ function keywordMatching(keyword, child){
             }
         }
     }
+    console.log(checker)
     if(checker >= Math.round(keyword.length*2/3)){
         return true
     } else {
@@ -110,7 +111,6 @@ const findBestMatch = asyncHandler(async (req, res) => {
         } else if((Math.round(bestMatch["bestMatch"]["rating"]*100)) >= 80){
             result = true
         }
-        //if()
         res.status(201).json({
             message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
             keyword: keyword,
