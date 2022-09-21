@@ -27,8 +27,6 @@ function keywordMatching(keyword, child){
 
     for(let i = 0; i < keyword.length; i++){
         for(let j = 0; j < child.length; j++){
-            console.log(keyword[i])
-            console.log(child[i])
             if(keyword[i] === child[i]){
                 checker++
             }
@@ -103,9 +101,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
                 master: bestMatch["bestMatch"]["target"]
             })
         }
-        let processedKeyword = textProcessing(findCategory["keyword"])
-        console.log("keyword is: " + processedKeyword)
-        let keywordChecker = keywordMatching(processedKeyword, textProcessing(bestMatch["bestMatch"]["target"]))
+        let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(bestMatch["bestMatch"]["target"]))
         let keyword = keywordChecker
         let result = false
         if(((Math.round(bestMatch["bestMatch"]["rating"]*100)) < 80 || keyword === true) && (Math.round(bestMatch["bestMatch"]["rating"]*100)) > 20){
@@ -115,7 +111,8 @@ const findBestMatch = asyncHandler(async (req, res) => {
         }
         res.status(201).json({
             message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
-            keyword: keyword,
+            keyword: findCategory["keyword"],
+            keywordBoolean: keyword,
             result: result
         })
         console.log(bestMatch["bestMatch"])
