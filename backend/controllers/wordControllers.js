@@ -101,7 +101,8 @@ const findBestMatch = asyncHandler(async (req, res) => {
             })
         }
         res.status(201).json({
-            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`
+            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
+            keyword: true
         })
         console.log(bestMatch["bestMatch"])
         //console.log(findCategory["category"])
