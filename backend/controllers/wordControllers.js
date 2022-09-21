@@ -27,10 +27,10 @@ function keywordMatching(keyword, child){
 
     for(let i = 0; i < keyword.length; i++){
         for(let j = 0; j < child.length; j++){
+            console.log(keyword[i])
+            console.log(child[i])
             if(keyword[i] === child[i]){
                 checker++
-                console.log(keyword[i])
-                console.log(child[i])
             }
         }
     }
