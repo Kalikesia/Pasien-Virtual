@@ -102,11 +102,18 @@ const findBestMatch = asyncHandler(async (req, res) => {
         }
         let processedKeyword = textProcessing(findCategory["keyword"])
         console.log("keyword is: " + processedKeyword)
-        let result = "false"
+        let keywordChecker = keywordMatching(processedKeyword, bestMatch["bestMatch"]["target"])
+        let keyword = keywordChecker
+        let result = false
+        if(((Math.round(bestMatch["bestMatch"]["rating"]*100)) < 80 || keyword === true) && (Math.round(bestMatch["bestMatch"]["rating"]*100)) > 20){
+            result = true
+        } else if((Math.round(bestMatch["bestMatch"]["rating"]*100)) >= 80){
+            result = true
+        }
         //if()
         res.status(201).json({
             message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
-            keyword: true,
+            keyword: keyword,
             result: result
         })
         console.log(bestMatch["bestMatch"])
