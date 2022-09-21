@@ -29,6 +29,8 @@ function keywordMatching(keyword, child){
         for(let j = 0; j < child.length; j++){
             if(keyword[i] === child[i]){
                 checker++
+                console.log(keyword[i])
+                console.log(child[i])
             }
         }
     }
