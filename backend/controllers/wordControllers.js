@@ -104,7 +104,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
         let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(bestMatch["bestMatch"]["target"]))
         let keyword = keywordChecker
         let result = false
-        if(((Math.round(bestMatch["bestMatch"]["rating"]*100)) < 70 || keyword === true) && (Math.round(bestMatch["bestMatch"]["rating"]*100)) > 20){
+        if(((Math.round(bestMatch["bestMatch"]["rating"]*100)) < 70 || keyword === true) && (Math.round(bestMatch["bestMatch"]["rating"]*100)) > 50){
             result = true
         } else if((Math.round(bestMatch["bestMatch"]["rating"]*100)) >= 70){
             result = true
