@@ -1,8 +1,9 @@
-const asyncHandler = require('express-async-handler') //For future development if API is needed!
+const asyncHandler = require('express-async-handler')
 const sastrawi = require("sastrawijs"); 
 const stringSimilarity = require("string-similarity")
 const { removeStopwords } = require('stopword')
 const { ind } = require('../utils/dictionary')
+const { synonyms } = require('../utils/synonym')
 const Word = require('../models/wordModel')
 
 function textProcessing(text){
@@ -22,6 +23,17 @@ function textProcessing(text){
     return processedWords
 }
 
+function replaceSynonym(sentence){
+    let newSentence = sentence
+
+    Object.keys(synonyms).forEach(key => {
+        const checkSynonyms = new RegExp(synonyms[key].join('|'),'gi')
+        newSentence = newSentence.replace(checkSynonyms, key)
+    })
+
+    return newSentence
+}
+
 function keywordMatching(keyword, child){
     let checker = 0
 
@@ -33,6 +45,7 @@ function keywordMatching(keyword, child){
         }
     }
     console.log(checker)
+    console.log(keyword)
     if(checker >= Math.round(keyword.length*2/3)){
         return true
     } else {
@@ -76,7 +89,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
     let processedChildText = textProcessing(child)
     //let processedKeyword = textProcessing(keyword)
 
-    console.log("child word is" + processedChildText)
+    //console.log("child word is" + processedChildText)
 
     //let keywordChecker = keywordMatching(processedKeyword, processedChildText)
 
@@ -89,11 +102,11 @@ const findBestMatch = asyncHandler(async (req, res) => {
         }
     }
 
-    console.log(masterArray)
+    //console.log(masterArray)
 
     if(child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
-        console.log(bestMatch)
+        //console.log(bestMatch)
         let findCategory = await Word.findOne({
             varians: bestMatch["bestMatch"]["target"]
         })
@@ -116,7 +129,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
             keywordBoolean: keyword,
             result: result
         })
-        console.log(bestMatch["bestMatch"])
+        //console.log(bestMatch["bestMatch"])
         //console.log(findCategory["category"])
     } else{
         res.status(400).json({
