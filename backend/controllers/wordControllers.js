@@ -45,7 +45,7 @@ function keywordMatching(keyword, child){
         }
     }
     console.log(checker)
-    console.log(child)
+    console.log(child.join(" "))
     if(checker >= Math.round(keyword.length*2/3)){
         return true
     } else {
