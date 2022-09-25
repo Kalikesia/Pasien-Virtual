@@ -45,11 +45,24 @@ function keywordMatching(keyword, child){
         }
     }
     console.log(checker)
-    console.log(child.join(" "))
+    let combinedWord = textProcessing(replaceSynonym(child.join(" ")))
+    console.log(combinedWord)
     if(checker >= Math.round(keyword.length*2/3)){
         return true
     } else {
-        return false
+        checker = 0
+        for(let i = 0; i < keyword.length; i++){
+            for(let j = 0; j < combinedWord.length; j++){
+                if(keyword[i] === combinedWord[i]){
+                    checker++
+                }
+            }
+        }
+        if(checker >= Math.round(keyword.length*2/3)){
+            return true
+        } else{
+            return false
+        }
     }
 }
 
