@@ -1,0 +1,232 @@
+body{
+    background: blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(338.32deg,rgba(0,0,0,.8) -6.31%,hsla(0,0%,100%,.224) 101.26%),url("https://pasivik.kalikesia.id/_nuxt/img/pasivik-bg.94e927d.jpeg");
+    background-size: cover;
+}
+h1{
+    text-align: center;
+    color: white;
+    font-size: 3rem;
+    text-shadow: 0px 1px 3px rgba(0,0,0, 0.6);
+    margin: 0;
+}
+p.sub-title{
+    margin-top: 0;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    text-shadow: 0px 1px 3px rgba(0,0,0, 0.6);
+}
+#menu-container{
+    width: 1200px;
+    border-radius: 15px;
+    overflow: hidden;
+    height: 680px;
+    padding: 10px;
+    display: flex;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255, 0.4);
+    -webkit-box-shadow: 0px 10px 33px 0px rgba(0,0,0, 0.25);
+    -moz-box-shadow: 0px 10px 33px 0px rgba(0,0,0, 0.25);
+    box-shadow: 0px 10px 33px 0px rgba(0,0,0, 0.25);
+    .menu-info{
+        background-color: #0a5f8e;
+        border-radius: 15px;
+        flex: 0 1 40%;
+        padding: 40px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        h4{
+            font-size: 2rem;
+            font-weight: 700;
+            //margin-top: 0;
+            margin: 0;
+        }
+        p{
+            color: rgba(255,255,255, 0.7);
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+        .icon-text{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 2rem;
+            .fa{
+                flex: 0 0 20px;
+                font-size: 1.8rem;
+                margin-right: 2rem;
+                color: #05f7ff;
+            }
+            span{
+                font-size: 1.1rem;
+                font-weight: 300;
+            }
+        }
+        .social-media{
+            display: flex;
+            width: 50%;
+            justify-content: space-between;
+            .icon-circle{
+                flex: 0 0 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 40px;
+                border-radius: 50%;
+                transition: 0.3s all ease-in-out;
+                &:hover{
+                    background: #05f7ff;
+                }
+                .fa{
+                    font-size: 25px;
+                }
+            }
+        }
+        .menu-tab{
+            button{
+                width: 100%;
+                padding: 15px;
+                margin-top: 15px;
+                border-radius: 5px;
+                border: none;
+                outline: none;
+                color: white;
+                background: rgba(0,0,0,0.5);
+                cursor: pointer;
+                transition: 0.3s all ease-in-out;
+                &:hover{
+                    background: #05f7ff;
+                    color: black
+                }
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+    form{
+        padding: 40px;
+        width: 100%;
+        .col{
+            display: flex;
+            width: 100%;
+            flex: 0 1 100%;
+        }
+        .form-group{
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            flex: 0 1 100%;
+            padding-right: 40px;
+            label{
+                font-size: 0.9rem;
+                color: rgba(255,255,255, 0.6);
+            }
+            input[type="text"], input[type="email"], input[type="tel"], textarea{
+                //background: rgba(255,255,255, 0.2);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+                font-size: 1rem;
+                font-weight: 300;
+                background: transparent;
+                border-bottom: 2px solid rgba(255,255,255, 0.4);
+                transition: 0.3s all ease-in-out;
+                margin-bottom: 2rem;
+                &:focus{
+                    outline: none;
+                    border-bottom: 2px solid #05f7ff;
+                }
+            }
+            &:nth-child(2){
+                padding-right: 0px;
+            }
+            &.solo{
+                padding: 0;
+            }
+            &.right{
+                align-items: flex-end;
+            }
+            button{
+                width: 200px;
+                height: 60px;
+                cursor: pointer;
+                background: #0a5f8e;
+                border: none;
+                text-transform: uppercase;
+                border-radius: 5px;
+            }
+        }
+    }
+    .database-container{
+        padding: 40px;
+        width: 100%;
+        overflow: scroll;
+        .database-column{
+            //background: #05f7ff20;
+            -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.8); 
+            box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            h3{
+                padding-left: 15px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                //background: #0a5f8e90;
+                margin: 0px;
+                color: rgba(255,255,255);
+                border-bottom: 1px solid rgba(255,255,255,0.7);
+            }
+            p{
+                padding-left: 15px;
+                padding-top: 5px;
+                margin: 0px;
+                color: rgba(255,255,255, 0.9)
+            }
+            button{
+                background: #0a5f8e90;
+                border: none;
+                outline: none;
+                width: 10%;
+                padding: 10px;
+                margin: 2%;
+                cursor: pointer;
+                transition: 0.3s all ease-in-out;
+                &:hover{
+                    background: #05f7ff;
+                    color: black
+                }
+            }
+        }
+    }
+}
+
+@keyframes inAnimation {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  
+  @keyframes outAnimation {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
