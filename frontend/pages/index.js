@@ -18,6 +18,7 @@ const unmountedStyle = {
 export default function Home() {
   const dispatch = useDispatch();
   const [menuNumber, setMenuNumber] = useState(0)
+  const [activeButton, setActiveButton] = useState(0)
 
   useEffect(() => {
     document.title = "Smart Pasivik - Pasien Virtual"
@@ -71,9 +72,9 @@ export default function Home() {
           </a>
         </div>
         <div className = "menu-tab">
-          <button onClick = {() => setMenuNumber(0)}>DISPLAY</button>
-          <button onClick = {() => setMenuNumber(1)}>INPUT</button>
-          <button onClick = {() => setMenuNumber(2)}>TEST</button>
+          <button className = {activeButton == 0 ? "active" : "undefined"} onClick = {() => {setMenuNumber(0); setActiveButton(0)}}>DISPLAY</button>
+          <button className = {activeButton == 1 ? "active" : "undefined"} onClick = {() => {setMenuNumber(1); setActiveButton(1)}}>INPUT</button>
+          <button className = {activeButton == 2 ? "active" : "undefined"} onClick = {() => {setMenuNumber(2); setActiveButton(2)}}>TEST</button>
         </div>
       </div>
       {menuNumber == 0 &&
@@ -88,7 +89,6 @@ export default function Home() {
       </div>
       })}
       </div>
-      
       }
       {menuNumber == 1 &&
       <form style = {menuNumber == 1 ? mountedStyle : unmountedStyle}>
@@ -155,9 +155,26 @@ export default function Home() {
       </div>
     </form>
     }
-
+    {menuNumber == 2 &&
+      <div className = "testing-container"  style = {menuNumber == 2? mountedStyle : unmountedStyle}>
+        <div className = "col">
+          <div className = "form-group solo">
+            <label>Master</label>
+            <textarea></textarea>
+          </div>
+        </div>
+        <h1 className = "testing-title">Output</h1>
+        <p className= "testing-output" >Hello</p>
+      </div>
+    }
     </div>
-
+    <div className = "modal-background hidden">
+      <div className = "modal-menu">
+        <div>
+        
+        </div>
+      </div>
+    </div>
     </>
   )
 }

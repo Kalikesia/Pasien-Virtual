@@ -36,7 +36,7 @@ p.sub-title{
     -moz-box-shadow: 0px 10px 33px 0px rgba(0,0,0, 0.25);
     box-shadow: 0px 10px 33px 0px rgba(0,0,0, 0.25);
     .menu-info{
-        background-color: #0a5f8e;
+        background-color: rgba(0,0,0,0.4);
         border-radius: 15px;
         flex: 0 1 40%;
         padding: 40px;
@@ -92,6 +92,9 @@ p.sub-title{
             }
         }
         .menu-tab{
+            .active{
+                background: #2a8dc2;
+            }
             button{
                 width: 100%;
                 padding: 15px;
@@ -100,7 +103,7 @@ p.sub-title{
                 border: none;
                 outline: none;
                 color: white;
-                background: rgba(0,0,0,0.5);
+                background: #0a5f8e90;
                 cursor: pointer;
                 transition: 0.3s all ease-in-out;
                 &:hover{
@@ -171,8 +174,10 @@ p.sub-title{
         padding: 40px;
         width: 100%;
         overflow: scroll;
+        overflow-x: hidden;
         .database-column{
             //background: #05f7ff20;
+            background: rgba(0,0,0,0.4);
             -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.8); 
             box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.8);
             margin-bottom: 10px;
@@ -184,7 +189,7 @@ p.sub-title{
                 //background: #0a5f8e90;
                 margin: 0px;
                 color: rgba(255,255,255);
-                border-bottom: 1px solid rgba(255,255,255,0.7);
+                border-bottom: 2px solid #05f7ff80;
             }
             p{
                 padding-left: 15px;
@@ -200,15 +205,92 @@ p.sub-title{
                 padding: 10px;
                 margin: 2%;
                 cursor: pointer;
+                border-radius: 5px;
                 transition: 0.3s all ease-in-out;
                 &:hover{
                     background: #05f7ff;
-                    color: black
+                    color: black;
                 }
             }
         }
     }
 }
+
+
+.modal-background{
+    .modal-menu{
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background: white;
+        width: 50%;
+        height: 50%;
+        bottom: 25%;
+        left: 25%;
+    }
+}
+
+.testing-container{
+    padding: 40px;
+    width: 100%;
+    .col{
+        display: flex;
+        width: 100%;
+        flex: 0 1 100%;
+    }
+    .form-group{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        flex: 0 1 100%;
+        padding-right: 40px;
+        label{
+            font-size: 0.9rem;
+            color: rgba(255,255,255, 0.6);
+        }
+        textarea{
+            //background: rgba(255,255,255, 0.2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border: none;
+            height: 250px;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1rem;
+            font-weight: 300;
+            background: transparent;
+            border-bottom: 2px solid rgba(255,255,255, 0.4);
+            transition: 0.3s all ease-in-out;
+            margin-bottom: 2rem;
+            &:focus{
+                outline: none;
+                border-bottom: 2px solid #05f7ff;
+            }
+        }
+        &:nth-child(2){
+            padding-right: 0px;
+        }
+        &.solo{
+            padding: 0;
+        }
+        &.right{
+            align-items: flex-end;
+        }
+        button{
+            width: 200px;
+            height: 60px;
+            cursor: pointer;
+            background: #0a5f8e;
+            border: none;
+            text-transform: uppercase;
+            border-radius: 5px;
+        }
+    }
+}
+
+.hidden{
+    display: none;
+}
+
 
 @keyframes inAnimation {
     0% {
