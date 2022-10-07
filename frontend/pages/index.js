@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { listWord } from '../actions/wordActions'
+import { listWord, findBestMatch } from '../actions/wordActions'
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,11 +19,19 @@ export default function Home() {
   const dispatch = useDispatch();
   const [menuNumber, setMenuNumber] = useState(0)
   const [activeButton, setActiveButton] = useState(0)
+  const [userWord, setUserWord] = useState("")
+  const [accuracyOutput, setAccuracyOutput] = useState("")
 
   useEffect(() => {
     document.title = "Smart Pasivik - Pasien Virtual"
     dispatch(listWord())
   }, [dispatch])
+
+  const submitTesting = async(e) => {
+    e.preventDefault();
+  
+    setAccuracyOutput(await dispatch(findBestMatch(userWord)))
+  }
 
   const wordList = useSelector((state) => state.databaseList);
   const { category, products, error } = wordList;
@@ -159,12 +167,17 @@ export default function Home() {
       <div className = "testing-container"  style = {menuNumber == 2? mountedStyle : unmountedStyle}>
         <div className = "col">
           <div className = "form-group solo">
-            <label>Master</label>
-            <textarea></textarea>
+            <h1>Master</h1>
+            <textarea value={userWord} onChange = {(e) => setUserWord(e.target.value)}></textarea>
           </div>
         </div>
         <h1 className = "testing-title">Output</h1>
-        <p className= "testing-output" >Hello</p>
+        <div className = "testing-output">
+          <p>{accuracyOutput.message}</p>
+        </div>
+        <div className = "form-group solo right">
+          <button className = "primary" onClick = {submitTesting}>Send Testing</button>
+        </div>
       </div>
     }
     </div>

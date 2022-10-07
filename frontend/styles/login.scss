@@ -233,6 +233,21 @@ p.sub-title{
 .testing-container{
     padding: 40px;
     width: 100%;
+    h1{
+        font-size: 20px;
+        color: rgba(255,255,255,0.7);
+        box-shadow: 0 0 0 0;
+        margin-bottom: 10px;
+    }
+    button{
+        width: 200px;
+        height: 60px;
+        cursor: pointer;
+        background: #0a5f8e;
+        border: none;
+        text-transform: uppercase;
+        border-radius: 5px;
+    }
     .col{
         display: flex;
         width: 100%;
@@ -252,7 +267,7 @@ p.sub-title{
             //background: rgba(255,255,255, 0.2);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             border: none;
-            height: 250px;
+            height: 22.5vh;
             cursor: pointer;
             padding: 5px;
             font-size: 1rem;
@@ -275,15 +290,17 @@ p.sub-title{
         &.right{
             align-items: flex-end;
         }
-        button{
-            width: 200px;
-            height: 60px;
-            cursor: pointer;
-            background: #0a5f8e;
-            border: none;
-            text-transform: uppercase;
-            border-radius: 5px;
-        }
+    }
+    .testing-output{
+        background: rgba(0,0,0,0.4);
+        color: white;
+        padding: 20px;
+        padding-top: 2px;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        margin-bottom: 10px;
+        height: 22vh;
     }
 }
 

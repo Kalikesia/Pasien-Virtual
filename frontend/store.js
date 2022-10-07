@@ -1,10 +1,11 @@
 import { legacy_createStore as createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from "redux-thunk"
 import { composeWithDevTools } from "redux-devtools-extension"
-import { databaseDisplay } from './reducers/wordReducers';
+import { databaseDisplay, findBestMatch } from './reducers/wordReducers';
 
 const reducer = combineReducers({
-    databaseList: databaseDisplay
+    databaseList: databaseDisplay,
+    bestAccuracy: findBestMatch
 });
 
 const initialState = {};
