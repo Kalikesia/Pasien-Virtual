@@ -82,7 +82,7 @@ export default function Home() {
         <div className = "menu-tab">
           <button className = {activeButton == 0 ? "active" : "undefined"} onClick = {() => {setMenuNumber(0); setActiveButton(0)}}>DISPLAY</button>
           <button className = {activeButton == 1 ? "active" : "undefined"} onClick = {() => {setMenuNumber(1); setActiveButton(1)}}>INPUT</button>
-          <button className = {activeButton == 2 ? "active" : "undefined"} onClick = {() => {setMenuNumber(2); setActiveButton(2)}}>TEST</button>
+          <button className = {activeButton == 2 ? "active" : "undefined"} onClick = {() => {setMenuNumber(2); setActiveButton(2)}}>FIND BEST MATCH</button>
         </div>
       </div>
       {menuNumber == 0 &&

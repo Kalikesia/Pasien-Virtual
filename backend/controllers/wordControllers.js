@@ -4,7 +4,8 @@ const stringSimilarity = require("string-similarity")
 const { removeStopwords } = require('stopword')
 const { ind } = require('../utils/dictionary')
 const { synonyms } = require('../utils/synonym')
-const Word = require('../models/wordModel')
+const Word = require('../models/wordModel');
+const { text } = require('express');
 
 function textProcessing(text){
     let stemmed = []
@@ -65,6 +66,48 @@ function keywordMatching(keyword, child){
         }
     }
 }
+
+function keywordCounting(keyword, child){
+    let checker = 0
+
+    for(let i = 0; i < keyword.length; i++){
+        for(let j = 0; j < child.length; j++){
+            if(keyword[i] === child[i]){
+                checker++
+            }
+        }
+    }
+    return checker
+}
+
+const findWordByKeyword = asyncHandler(async (req, res) => {
+    const { child } = req.body
+    let processedChild = textProcessing(child)
+
+    const wordMaster = await Word.find()
+    let masterArray = []
+    for(let i = 0; i < wordMaster.length; i++){
+        masterArray.push(wordMaster[i]["master"])
+        for(let j = 0; j < wordMaster[i]["varians"].length; j++){
+            masterArray.push(wordMaster[i]["varians"][j])
+        }
+    }
+
+    let countingArray = []
+
+    for(let i = 0; i < masterArray.length; i++){
+        countingArray.push(keywordCounting(processedChild))
+    }
+
+    const biggestIndex = Math.max(...countingArray)
+    const indexofBiggestElement = []
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === biggestIndex) {
+            indexofBiggestElement.push(i);
+        }
+      }
+})
 
 const compareWord = asyncHandler(async (req, res) => {
     const { master, keyword, child } = req.body
