@@ -96,17 +96,27 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
     let countingArray = []
 
     for(let i = 0; i < masterArray.length; i++){
-        countingArray.push(keywordCounting(processedChild))
+        countingArray.push(keywordCounting(textProcessing(masterArray[i]),processedChild))
     }
 
     const biggestIndex = Math.max(...countingArray)
     const indexofBiggestElement = []
 
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] === biggestIndex) {
+    for (let i = 0; i < countingArray.length; i++) {
+        if (countingArray[i] === biggestIndex) {
             indexofBiggestElement.push(i);
         }
-      }
+    }
+    console.log(biggestIndex)
+    console.log(indexofBiggestElement)
+    let keywordArray = []
+
+    for(let i = 0; i < indexofBiggestElement.length; i++){
+        keywordArray.push(masterArray[indexofBiggestElement[i]])
+    }
+    //FIX MULTIPLE WORD DETECTION
+    const bestMatch = stringSimilarity.findBestMatch(processedChild.join(" "), keywordArray)
+    //console.log(bestMatch)
 })
 
 const compareWord = asyncHandler(async (req, res) => {
@@ -284,5 +294,6 @@ module.exports = {
     findBestMatch,
     displayDatabase,
     deleteMaster,
-    updateMaster
+    updateMaster,
+    findWordByKeyword
 }

@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    compareWord, registerMaster, findBestMatch, displayDatabase, deleteMaster, updateMaster
+    compareWord, registerMaster, findBestMatch, displayDatabase, deleteMaster, updateMaster, findWordByKeyword
 } = require('../controllers/wordControllers')
 
 const router = express.Router()
