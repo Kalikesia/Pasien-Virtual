@@ -86,17 +86,21 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
 
     const wordMaster = await Word.find()
     let masterArray = []
+    let categoricalArray = []
     for(let i = 0; i < wordMaster.length; i++){
         masterArray.push(wordMaster[i]["master"])
+        categoricalArray.push(wordMaster[i]["keyword"])
         for(let j = 0; j < wordMaster[i]["varians"].length; j++){
             masterArray.push(wordMaster[i]["varians"][j])
         }
     }
 
+    console.log(categoricalArray)
+
     let countingArray = []
 
-    for(let i = 0; i < masterArray.length; i++){
-        countingArray.push(keywordCounting(textProcessing(masterArray[i]),processedChild))
+    for(let i = 0; i < categoricalArray.length; i++){
+        countingArray.push(keywordCounting(textProcessing(categoricalArray[i]),processedChild))
     }
 
     const biggestIndex = Math.max(...countingArray)
@@ -108,12 +112,18 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
         }
     }
     console.log(biggestIndex)
-    console.log(indexofBiggestElement)
+    console.log()
     let keywordArray = []
 
     for(let i = 0; i < indexofBiggestElement.length; i++){
-        keywordArray.push(masterArray[indexofBiggestElement[i]])
+        console.log(wordMaster[indexofBiggestElement[i] - 1])
+        for(let j = indexofBiggestElement[i] * 10 + 1; j < indexofBiggestElement[i] * 10 + 11; j++){
+            keywordArray.push(masterArray[j])
+        }
     }
+    //for(let i = 0; i < indexofBiggestElement.length; i++){
+        //keywordArray.push(masterArray[indexofBiggestElement[i]])
+    //}
     //FIX MULTIPLE WORD DETECTION
     const bestMatch = stringSimilarity.findBestMatch(processedChild.join(" "), keywordArray)
     //console.log(bestMatch)
@@ -222,6 +232,12 @@ const registerMaster = asyncHandler(async (req, res) => {
 
     let processedWord = [...new Set(cleanedWords)]
     let processedMaster = textProcessing(master).join(" ")
+
+    if(processedWord.length < 10){
+        for(let i = processedWord.length; i < 10; i++){
+            processedWord.push(null)
+        }
+    }
 
     const word = await Word.create({
         category,
