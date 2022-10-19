@@ -5,6 +5,7 @@ const { removeStopwords } = require('stopword')
 const { ind } = require('../utils/dictionary')
 const { synonyms } = require('../utils/synonym')
 const Word = require('../models/wordModel');
+const Raw = require('../models/rawModel')
 const { text } = require('express');
 
 function textProcessing(text){
@@ -243,6 +244,13 @@ const registerMaster = asyncHandler(async (req, res) => {
         category,
         master: processedMaster,
         varians: processedWord,
+        keyword,
+        position
+    })
+    const raw = await Word.create({
+        category,
+        master: master,
+        varians: varians,
         keyword,
         position
     })
