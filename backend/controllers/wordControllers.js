@@ -247,7 +247,7 @@ const registerMaster = asyncHandler(async (req, res) => {
         keyword,
         position
     })
-    const raw = await Word.create({
+    const raw = await Raw.create({
         category,
         master: master,
         varians: varians,
