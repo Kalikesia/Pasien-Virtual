@@ -29,7 +29,7 @@ const naiveBayerInit = asyncHandler(async (req, res) => {
         }
     }
     nbc.consolidate()
-    console.log("Naive Bayer Model is Done Training!")
+    console.log("Naive Bayer Model is Done Learning!")
 })
 
 naiveBayerInit()
@@ -43,7 +43,7 @@ const naiveBayer = asyncHandler(async (req, res) => {
     })
     let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(prediction))
     let keyword = keywordChecker
-    res.status(201).json({
+    res.status(200).json({
         message: `Kalimat master paling sesuai adalah '${prediction}' yang terletak pada Kategori: '${findCategory["category"]}' pada posisi ${findCategory["position"]}`,
         keyword: findCategory["keyword"],
         keywordBoolean: keyword,
