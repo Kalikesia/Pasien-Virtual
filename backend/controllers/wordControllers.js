@@ -384,13 +384,13 @@ const updateMaster = asyncHandler(async (req, res) => {
 const compareAllAlgorithm = asyncHandler(async (req, res) => {
     const { child } = req.body
     let processedChildText = textProcessing(child)
-    const naiveBayer = await axios.post(`http://127.0.0.1:5000/api/word/naiveBayer`, {
+    const naiveBayer = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/naiveBayer`, {
         child: processedChildText.join(" ")
     })
-    const diceCoefficientResult = await axios.post(`http://127.0.0.1:5000/api/word/match`, {
+    const diceCoefficientResult = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/match`, {
         child: processedChildText.join(" ")
     })
-    const legacyDiceCoefficientResult = await axios.post(`http://127.0.0.1:5000/api/word/legacyMatch`, {
+    const legacyDiceCoefficientResult = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/legacyMatch`, {
         child: processedChildText.join(" ")
     })
     res.status(200).json({
