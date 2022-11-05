@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const axios = require('axios')
 const sastrawi = require("sastrawijs"); 
 const stringSimilarity = require("string-similarity")
 const { removeStopwords } = require('stopword')
@@ -7,6 +8,47 @@ const { synonyms } = require('../utils/synonym')
 const Word = require('../models/wordModel');
 const Raw = require('../models/rawModel')
 const { text } = require('express');
+var Classifier = require('wink-naive-bayes-text-classifier')
+var nbc = Classifier()
+
+const naiveBayerInit = asyncHandler(async (req, res) => {
+    const wordMaster = await Word.find()
+    const prepText = function ( text ) {
+        let tokenizer = new sastrawi.Tokenizer()
+    
+        let words = tokenizer.tokenize(text)
+        return words
+    }
+    nbc.definePrepTasks( [ prepText ] );
+    nbc.defineConfig( { considerOnlyPresence: true, smoothingFactor: 0.5 } )
+    console.log("Naive Bayer Model is Initializing!")
+    for(let i = 0; i < wordMaster.length; i++){
+        nbc.learn(`${wordMaster[i]["master"]}`, `${wordMaster[i]["master"]}`)
+        for(let j = 0; j < wordMaster[i]["varians"].length; j++){
+            nbc.learn(`${wordMaster[i]["varians"][j]}`, `${wordMaster[i]["master"]}`)
+        }
+    }
+    nbc.consolidate()
+    console.log("Naive Bayer Model is Done Training!")
+})
+
+naiveBayerInit()
+
+const naiveBayer = asyncHandler(async (req, res) => {
+    const { child } = req.body
+    const childProcessed = textProcessing(replaceSynonym(child))
+    prediction = nbc.predict(childProcessed.join(" "))
+    findCategory = await Word.findOne({
+        master: prediction
+    })
+    let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(prediction))
+    let keyword = keywordChecker
+    res.status(201).json({
+        message: `Kalimat master paling sesuai adalah '${prediction}' yang terletak pada Kategori: '${findCategory["category"]}' pada posisi ${findCategory["position"]}`,
+        keyword: findCategory["keyword"],
+        keywordBoolean: keyword,
+    })
+})
 
 function textProcessing(text){
     let stemmed = []
@@ -73,7 +115,7 @@ function keywordCounting(keyword, child){
 
     for(let i = 0; i < keyword.length; i++){
         for(let j = 0; j < child.length; j++){
-            if(keyword[i] === child[i]){
+            if(keyword[i] === child[j]){
                 checker++
             }
         }
@@ -81,9 +123,14 @@ function keywordCounting(keyword, child){
     return checker
 }
 
-const findWordByKeyword = asyncHandler(async (req, res) => {
+const findWordByKeyword = asyncHandler(async (req, res, next) => {
     const { child } = req.body
-    let processedChild = textProcessing(child)
+    childSynonym = replaceSynonym(child)
+    let processedChild = textProcessing(childSynonym)
+
+    if(child == "" || child == " "){
+        throw new Error("Form is not populated!")
+    }
 
     const wordMaster = await Word.find()
     let masterArray = []
@@ -96,7 +143,7 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
         }
     }
 
-    console.log(categoricalArray)
+    //console.log(categoricalArray)
 
     let countingArray = []
 
@@ -104,7 +151,15 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
         countingArray.push(keywordCounting(textProcessing(categoricalArray[i]),processedChild))
     }
 
+    //console.log(countingArray)
+
     const biggestIndex = Math.max(...countingArray)
+    if(biggestIndex == 0){
+        res.status(200).json({message: "No word found!"})
+        return next()
+    }
+
+
     const indexofBiggestElement = []
 
     for (let i = 0; i < countingArray.length; i++) {
@@ -112,21 +167,46 @@ const findWordByKeyword = asyncHandler(async (req, res) => {
             indexofBiggestElement.push(i);
         }
     }
-    console.log(biggestIndex)
-    console.log()
+    //console.log(`keyword in array ${countingArray}`)
     let keywordArray = []
 
     for(let i = 0; i < indexofBiggestElement.length; i++){
-        console.log(wordMaster[indexofBiggestElement[i] - 1])
-        for(let j = indexofBiggestElement[i] * 10 + 1; j < indexofBiggestElement[i] * 10 + 11; j++){
-            keywordArray.push(masterArray[j])
+        //console.log(wordMaster[indexofBiggestElement[i] - 1])
+        //try for * (10 + 1) or (*10)
+        for(let j = indexofBiggestElement[i] * 11; j < indexofBiggestElement[i] * 11 + 11; j++){
+            if(masterArray[j] != ""){
+                keywordArray.push(masterArray[j])
+            }
         }
     }
-    //for(let i = 0; i < indexofBiggestElement.length; i++){
-        //keywordArray.push(masterArray[indexofBiggestElement[i]])
-    //}
-    //FIX MULTIPLE WORD DETECTION
     const bestMatch = stringSimilarity.findBestMatch(processedChild.join(" "), keywordArray)
+    let findCategory = await Word.findOne({
+        varians: bestMatch["bestMatch"]["target"]
+    })
+    if(findCategory === null){
+        findCategory = await Word.findOne({
+            master: bestMatch["bestMatch"]["target"]
+        })
+    }
+    let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(replaceSynonym(bestMatch["bestMatch"]["target"])))
+    let keyword = keywordChecker
+    let result = false
+    if(bestMatch["bestMatch"]["rating"]*100 > 70){
+        result = true
+    }
+    if(bestMatch){
+        res.status(201).json({
+            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
+            keyword: findCategory["keyword"],
+            keywordBoolean: keyword,
+            result: result
+        })
+    } else{
+        res.status(400).json({
+            message: "Something gone horribly wrong!"
+        })
+        throw new Error("Something gone horribly wrong!")
+    }
     //console.log(bestMatch)
 })
 
@@ -162,13 +242,7 @@ const displayDatabase = asyncHandler(async (req, res) => {
 
 const findBestMatch = asyncHandler(async (req, res) => {
     const { child } = req.body
-    //let processedMasterText = textProcessing(master)
     let processedChildText = textProcessing(child)
-    //let processedKeyword = textProcessing(keyword)
-
-    //console.log("child word is" + processedChildText)
-
-    //let keywordChecker = keywordMatching(processedKeyword, processedChildText)
 
     const wordMaster = await Word.find()
     let masterArray = []
@@ -179,11 +253,8 @@ const findBestMatch = asyncHandler(async (req, res) => {
         }
     }
 
-    //console.log(masterArray)
-
     if(child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
-        //console.log(bestMatch)
         let findCategory = await Word.findOne({
             varians: bestMatch["bestMatch"]["target"]
         })
@@ -201,7 +272,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
             result = true
         }
         res.status(201).json({
-            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
+            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
             keyword: findCategory["keyword"],
             keywordBoolean: keyword,
             result: result
@@ -213,8 +284,6 @@ const findBestMatch = asyncHandler(async (req, res) => {
             message: "Please Fill All the Form!"
         })
     }
-
-
 })
 
 const registerMaster = asyncHandler(async (req, res) => {
@@ -312,6 +381,25 @@ const updateMaster = asyncHandler(async (req, res) => {
     }
 })
 
+const compareAllAlgorithm = asyncHandler(async (req, res) => {
+    const { child } = req.body
+    let processedChildText = textProcessing(child)
+    const naiveBayer = await axios.post(`http://127.0.0.1:5000/api/word/naiveBayer`, {
+        child: processedChildText.join(" ")
+    })
+    const diceCoefficientResult = await axios.post(`http://127.0.0.1:5000/api/word/match`, {
+        child: processedChildText.join(" ")
+    })
+    const legacyDiceCoefficientResult = await axios.post(`http://127.0.0.1:5000/api/word/legacyMatch`, {
+        child: processedChildText.join(" ")
+    })
+    res.status(200).json({
+        naiveBayer: naiveBayer.data["message"],
+        diceCoefficient: diceCoefficientResult.data["message"],
+        legacyDiceCoefficient: legacyDiceCoefficientResult.data["message"]
+    })
+})
+
 module.exports = {
     compareWord,
     registerMaster,
@@ -319,5 +407,8 @@ module.exports = {
     displayDatabase,
     deleteMaster,
     updateMaster,
-    findWordByKeyword
+    findWordByKeyword,
+    naiveBayer,
+    naiveBayerInit,
+    compareAllAlgorithm
 }
