@@ -2,7 +2,11 @@
 Pasien Virtual SMART-PASIVIK adalah
 
 ## Algoritma Pasien Virtual
-Algoritma Pasien Virtual SMART-PASIVIK umumnya menggunakan Dice's Coefficient dan Naive Bayer. Dice's Coefficient digunakan untuk mencari kata kunci yang terdapat pada pesan yang dikirim, sedangkan Naive Bayer digunakan untuk mencocokkan kesamaan kalimat yang diujikan.
+Algoritma Pasien Virtual SMART-PASIVIK umumnya menggunakan Sørensen–Dice's Coefficient dan Naive Bayes. 
+
+Sørensen–Dice coefficient adalah statistik yang digunakan untuk mengukur kesamaan dua sampel[1], dalam aplikasi ini digunakan untuk mencari kata kunci yang terdapat pada pesan yang dikirim dengan mencocokkan kata yang dimasukkan dengan kata kunci yang terdapat di database.
+
+Naive Bayes Classification adalah pengklasifikasian probabilistik sederhana berdasarkan penerapan teorema Bayes dengan asumsi kuat antara figur[2], dalam aplikasi ini digunakan untuk mencocokkan kalimat dengan kelompok pertanyaan perawat yang ditanyakan.
 
 Ada 9 Algoritma yang ada di Pasien Virtual SMART-PASIVIK, yakni 
 1. compareWord, digunakan untuk mengecek kesamaan kalimat dengan Dice's Coefficient
@@ -12,8 +16,8 @@ Ada 9 Algoritma yang ada di Pasien Virtual SMART-PASIVIK, yakni
 5. displayDatabase, digunakan untuk mengambil database yang aktif
 6. deleteMaster, digunakan untuk digunakan untuk menghapus kata master tertentu yang terdapat di database
 7. updateMaster, digunakan untuk digunakan untuk memperbarui kata master tertentu yang terdapat di database
-8. naiveBayer, digunakan untuk mengecek kesamaan kata menggunakan Naive Bayer.
-9. compareAllAlgorithm, digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayer.
+8. naiveBayes, digunakan untuk mengecek kesamaan kata menggunakan Naive Bayes.
+9. compareAllAlgorithm, digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayes.
 
 ## Flowchart
 Flowchart yang terdapat di Pasien Virtual SMART-PASIVIK adalah sebagai berikut
@@ -38,14 +42,14 @@ Flowchart 6
 ### 7. updateMaster
 Flowchart 7
 
-### 8. naiveBayer
+### 8. naiveBayes
 Flowchart 8
 
 ### 9. compareAllAlgorithm
 Flowchart 9
 
 # API Pasien Virtual
-API Pasien Virtual Pasifik ada 9, yakni `compareWord`, `registerMaster`, `findWordByKeyword`, `findBestMatch`, `displayDatabase`, `deleteMaster`, `updateMaster`, `naiveBayer`, dan `compareAllAlgorithm`.
+API Pasien Virtual Pasifik ada 9, yakni `compareWord`, `registerMaster`, `findWordByKeyword`, `findBestMatch`, `displayDatabase`, `deleteMaster`, `updateMaster`, `naiveBayes`, dan `compareAllAlgorithm`.
 
 ## 1. compareWord
 compareWord digunakan untuk mengecek kesamaan kalimat dengan Dice's Coefficient. 
@@ -179,10 +183,10 @@ API akan memberi JSON dengan format dibawah ini
 }
 ```
  
-## 8. naiveBayer
-naiveBayer digunakan untuk mengecek kesamaan kata menggunakan Naive Bayer.
+## 8. naiveBayes
+naiveBayes digunakan untuk mengecek kesamaan kata menggunakan Naive Bayes.
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/naiveBayer`
+Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/naiveBayes`
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
@@ -201,7 +205,7 @@ API akan memberi JSON dengan format dibawah ini
 ```
 
 ## 9. compareAllAlgorithm
-compareAllAlgorithm digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayer
+compareAllAlgorithm digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayes
 
 Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/compareAll`
 
@@ -215,7 +219,7 @@ Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti 
 API akan memberi JSON dengan format dibawah ini
 ```
 {
-  "naiveBayer":"hasil menggunakan Naive Bayer",
+  "naiveBayes":"hasil menggunakan Naive Bayes",
   "diceCoefficient":"hasil menggunakan Dice's Coefficient",
   "legacyDiceCoefficient":"hasil menggunakan variasi Dice's Coefficient",
 }
@@ -223,4 +227,8 @@ API akan memberi JSON dengan format dibawah ini
 
 # Isu
 Isu yang ada
-- 
+- (belum ada)
+
+
+# Referensi
+1. 
