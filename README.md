@@ -143,7 +143,7 @@ API akan memberi JSON dengan format dibawah ini
 ## 5. displayDatabase
 displayDatabase digunakan untuk mengambil database yang aktif
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/legacyMatch`
+Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/displayDB`
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan GET JSON
 
