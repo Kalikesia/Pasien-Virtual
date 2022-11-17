@@ -34,19 +34,3 @@ jobs:
         remote_host: "${{ secrets.VIRTUAL_DEPLOY_HOST }}"
         remote_user: "${{ secrets.VIRTUAL_DEPLOY_USER }}"
         remote_key: "${{ secrets.VIRTUAL_DEPLOY_SECRET }}"
-
-  create-envfile:
- 
-    runs-on: ubuntu-latest
- 
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_DEBUG: false
-        envkey_SOME_API_KEY: "MONGO_URI"
-        envkey_SECRET_KEY: ${{ secrets.MONGO_URI }}
-        some_other_variable: foobar
-        directory: ${{ secrets.VIRTUAL_DEPLOY_PATH }}
-        file_name: .env
-        fail_on_empty: false
