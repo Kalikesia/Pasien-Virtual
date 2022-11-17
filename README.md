@@ -152,7 +152,7 @@ API akan memberi JSON yang berisi database
 ## 6. deleteMaster
 deleteMaster digunakan untuk digunakan untuk menghapus kata master tertentu yang terdapat di database
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/delete/` dengan :id adalah nomor id kata master yang ingin dihapus
+Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/delete/:id` dengan :id adalah nomor id kata master yang ingin dihapus
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan DELETE JSON
