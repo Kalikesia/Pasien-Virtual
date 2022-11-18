@@ -216,20 +216,6 @@ p.sub-title{
     }
 }
 
-
-.modal-background{
-    .modal-menu{
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        background: white;
-        width: 50%;
-        height: 50%;
-        bottom: 25%;
-        left: 25%;
-    }
-}
-
 .testing-container{
     padding: 40px;
     width: 100%;
@@ -301,6 +287,125 @@ p.sub-title{
         width: 100%;
         margin-bottom: 10px;
         height: 22vh;
+    }
+}
+
+.modal-background{
+    .modal-menu{
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background: rgba(255,255,255,0.8);
+        width: 50%;
+        height: 50%;
+        bottom: 25%;
+        left: 25%;
+        overflow-y: scroll;
+        border-radius: 5px;
+        .category{
+            padding-left: 25px;
+            font-size: 1.5rem;
+            color: black;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid black;
+        }
+        .subcategory{
+            padding-left: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: black;
+        }
+        button{
+            width: 20px;
+            height: 20px;
+            float: right;
+            margin-right: 20px;
+        }
+        li{
+            padding-top: 5px;
+        }
+        .varians{
+            border-top: 2px solid black;
+            padding-top: 10px;
+            padding-left: 25px;
+            margin-bottom: -15px;
+            font-size: 1.5rem;
+        }
+    }
+    .modal-update{
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background: rgba(255,255,255,0.8);
+        width: 50%;
+        height: 50%;
+        bottom: 25%;
+        left: 25%;
+        overflow-y: scroll;
+        border-radius: 5px;
+        .close{
+            width: 20px;
+            height: 20px;
+            float: right;
+            margin: 20px;
+        }
+        form{
+            padding: 40px;
+            width: 100%;
+            .col{
+                display: flex;
+                width: 100%;
+                flex: 0 1 100%;
+            }
+            .form-group{
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+                flex: 0 1 100%;
+                padding-right: 40px;
+                label{
+                    font-size: 0.9rem;
+                    color: rgba(0,0,0, 0.8);
+                }
+                input[type="text"], input[type="email"], input[type="tel"], textarea{
+                    //background: rgba(255,255,255, 0.2);
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    border: none;
+                    cursor: pointer;
+                    padding: 5px;
+                    font-size: 1rem;
+                    font-weight: 300;
+                    background: transparent;
+                    border-bottom: 2px solid rgba(0,0,0, 0.4);
+                    color: black;
+                    transition: 0.3s all ease-in-out;
+                    margin-bottom: 2rem;
+                    &:focus{
+                        outline: none;
+                        border-bottom: 2px solid black;
+                    }
+                }
+                &:nth-child(2){
+                    padding-right: 0px;
+                }
+                &.solo{
+                    padding: 0;
+                }
+                &.right{
+                    align-items: flex-end;
+                }
+                button{
+                    width: 200px;
+                    height: 60px;
+                    cursor: pointer;
+                    background: #0a5f8e;
+                    border: none;
+                    text-transform: uppercase;
+                    border-radius: 5px;
+                }
+            }
+        }
     }
 }
 

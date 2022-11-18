@@ -19,6 +19,9 @@ export default function Home() {
   const dispatch = useDispatch();
   const [menuNumber, setMenuNumber] = useState(0)
   const [activeButton, setActiveButton] = useState(0)
+  const [detailsModal, setDetailsModal] = useState(false)
+  const [detailsUpdate, setDetailsUpdate] = useState(false)
+  const [detailsArray, setDetailsArray] = useState([])
   const [userWord, setUserWord] = useState("")
   const [accuracyOutput, setAccuracyOutput] = useState("")
 
@@ -82,7 +85,7 @@ export default function Home() {
         <div className = "menu-tab">
           <button className = {activeButton == 0 ? "active" : "undefined"} onClick = {() => {setMenuNumber(0); setActiveButton(0)}}>DISPLAY</button>
           <button className = {activeButton == 1 ? "active" : "undefined"} onClick = {() => {setMenuNumber(1); setActiveButton(1)}}>INPUT</button>
-          <button className = {activeButton == 2 ? "active" : "undefined"} onClick = {() => {setMenuNumber(2); setActiveButton(2)}}>FIND BEST MATCH</button>
+          <button className = {activeButton == 2 ? "active" : "undefined"} onClick = {() => {setMenuNumber(2); setActiveButton(2)}}>COMPARE</button>
         </div>
       </div>
       {menuNumber == 0 &&
@@ -91,8 +94,8 @@ export default function Home() {
         <h3>Category: {dataItems.category}</h3>
         <p>Master: {dataItems.master}</p>
         <p>Keyword: {dataItems.keyword}</p>
-        <button>Details</button>
-        <button>Update</button>
+        <button onClick={() => {setDetailsModal(true); setDetailsArray(dataItems)}}>Details</button>
+        <button onClick={() => {setDetailsUpdate(true); setDetailsArray(dataItems)}}>Update</button>
         <button>Delete</button>
       </div>
       })}
@@ -173,7 +176,8 @@ export default function Home() {
         </div>
         <h1 className = "testing-title">Output</h1>
         <div className = "testing-output">
-          <p>{accuracyOutput.message}</p>
+          <p>naiveBayes: {accuracyOutput?.naiveBayer}</p>
+          <p>diceCoefficient: {accuracyOutput?.diceCoefficient} </p>
         </div>
         <div className = "form-group solo right">
           <button className = "primary" onClick = {submitTesting}>Send Testing</button>
@@ -181,10 +185,85 @@ export default function Home() {
       </div>
     }
     </div>
-    <div className = "modal-background hidden">
+    <div className = { detailsModal == true ? "modal-background" : "modal-background hidden"}>
       <div className = "modal-menu">
         <div>
-        
+          <button onClick = {() => {setDetailsModal(false)}}></button>
+          <h3 className = "category">{detailsArray.category}</h3>
+          <p className = "subcategory">master: {detailsArray.master}</p>
+          <p className = "subcategory">keyword: {detailsArray.keyword}</p>
+          <h3 className = "varians">Varians</h3>
+          <ul> {detailsArray.varians?.map((varian, key) => {return <li>{varian}</li>})}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div className = { detailsUpdate == true ? "modal-background" : "modal-background hidden"}>
+      <div className = "modal-update">
+        <div>
+          <button className = "close" onClick = {() => {setDetailsUpdate(false)}}></button>
+          <form>
+            <div className = "col">
+              <div className = "form-group solo">
+                <label>Master</label>
+                <textarea value={detailsArray.master}></textarea>
+              </div>
+            </div>  
+            <div className = "form-group">
+              <label>Keyword</label>
+              <input type="text" value={detailsArray.keyword} />
+            </div>
+            <div className = "col">
+              <div className = "form-group">
+                <label>Varians 1</label>
+                <input type="text" />
+              </div>
+              <div className = "form-group">
+                <label>Varians 2</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className = "col">
+              <div className = "form-group">
+                <label>Varians 3</label>
+                <input type="text" />
+              </div>
+              <div className = "form-group">
+                <label>Varians 4</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className = "col">
+              <div className = "form-group">
+                <label>Varians 5</label>
+                <input type="text" />
+              </div>
+              <div className = "form-group">
+                <label>Varians 6</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className = "col">
+              <div className = "form-group">
+                <label>Varians 7</label>
+                <input type="text" />
+              </div>
+              <div className = "form-group">
+                <label>Varians 8</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className = "col">
+              <div className = "form-group">
+                <label>Varians 9</label>
+                <input type="text" />
+              </div>
+              <div className = "form-group">
+                <label>Varians 10</label>
+                <input type="text" />
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
