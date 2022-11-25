@@ -11,7 +11,7 @@ const { text } = require('express');
 var Classifier = require('wink-naive-bayes-text-classifier')
 var nbc = Classifier()
 
-const naiveBayerInit = asyncHandler(async (req, res) => {
+const naiveBayesInit = asyncHandler(async (req, res) => {
     const wordMaster = await Word.find()
     const prepText = function ( text ) {
         let tokenizer = new sastrawi.Tokenizer()
@@ -32,21 +32,18 @@ const naiveBayerInit = asyncHandler(async (req, res) => {
     console.log("Naive Bayer Model is Done Learning!")
 })
 
-naiveBayerInit()
+naiveBayesInit()
 
-const naiveBayer = asyncHandler(async (req, res) => {
+const naiveBayes = asyncHandler(async (req, res) => {
     const { child } = req.body
     const childProcessed = textProcessing(replaceSynonym(child))
     prediction = nbc.predict(childProcessed.join(" "))
     findCategory = await Word.findOne({
         master: prediction
     })
-    let keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(prediction))
-    let keyword = keywordChecker
     res.status(200).json({
         message: `Kalimat master paling sesuai adalah '${prediction}' yang terletak pada Kategori: '${findCategory["category"]}' pada posisi ${findCategory["position"]}`,
-        keyword: findCategory["keyword"],
-        keywordBoolean: keyword,
+        keyword: findCategory["keyword"]
     })
 })
 
@@ -384,20 +381,103 @@ const updateMaster = asyncHandler(async (req, res) => {
 const compareAllAlgorithm = asyncHandler(async (req, res) => {
     const { child } = req.body
     let processedChildText = textProcessing(child)
-    const naiveBayer = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/naiveBayer`, {
+    const naiveBayes = await axios.post(`https://virtual.pasivik.kalikesia.id/api/word/naiveBayes`, {
         child: processedChildText.join(" ")
     })
-    const diceCoefficientResult = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/match`, {
+    const diceCoefficientResult = await axios.post(`https://virtual.pasivik.kalikesia.id/api/word/match`, {
         child: processedChildText.join(" ")
     })
-    const legacyDiceCoefficientResult = await axios.post(`https://smart-pasivik-wma.herokuapp.com/api/word/legacyMatch`, {
+    const legacyDiceCoefficientResult = await axios.post(`https://virtual.pasivik.kalikesia.id/api/word/legacyMatch`, {
         child: processedChildText.join(" ")
     })
     res.status(200).json({
-        naiveBayer: naiveBayer.data["message"],
+        naiveBayes: naiveBayes.data["message"],
         diceCoefficient: diceCoefficientResult.data["message"],
         legacyDiceCoefficient: legacyDiceCoefficientResult.data["message"]
     })
+})
+
+const sorencentNaiveBayes = asyncHandler(async (req, res) => {
+    const { child } = req.body
+    childSynonym = replaceSynonym(child)
+    let processedChild = textProcessing(childSynonym)
+
+    if(child == "" || child == " "){
+        throw new Error("Form is not populated!")
+    }
+
+    const wordMaster = await Word.find()
+    let masterArray = []
+    let categoricalArray = []
+    for(let i = 0; i < wordMaster.length; i++){
+        masterArray.push(wordMaster[i]["master"])
+        categoricalArray.push(wordMaster[i]["keyword"])
+        for(let j = 0; j < wordMaster[i]["varians"].length; j++){
+            masterArray.push(wordMaster[i]["varians"][j])
+        }
+    }
+
+    let countingArray = []
+
+    for(let i = 0; i < categoricalArray.length; i++){
+        countingArray.push(keywordCounting(textProcessing(categoricalArray[i]),processedChild))
+    }
+
+    const biggestIndex = Math.max(...countingArray)
+    if(biggestIndex == 0){
+        res.status(200).json({message: "No word found!"})
+        return next()
+    }
+
+    const indexofBiggestElement = []
+
+    for (let i = 0; i < countingArray.length; i++) {
+        if (countingArray[i] === biggestIndex) {
+            indexofBiggestElement.push(i);
+        }
+    }
+    let keywordArray = []
+
+    for(let i = 0; i < indexofBiggestElement.length; i++){
+        for(let j = indexofBiggestElement[i] * 11; j < indexofBiggestElement[i] * 11 + 11; j++){
+            if(masterArray[j] != ""){
+                keywordArray.push(masterArray[j])
+            }
+        }
+    }
+    const bestMatch = stringSimilarity.findBestMatch(processedChild.join(" "), keywordArray)
+    let result = false
+    if(bestMatch["bestMatch"]["rating"]*100 >= 68){
+        result = true
+    }
+    if(result){
+        let findCategory = await Word.findOne({
+            varians: bestMatch["bestMatch"]["target"]
+        })
+        if(findCategory === null){
+            findCategory = await Word.findOne({
+                master: bestMatch["bestMatch"]["target"]
+            })
+        }
+        res.status(201).json({
+            message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
+            keyword: findCategory["keyword"],
+        })
+    } else if(!result){
+        prediction = nbc.predict(processedChild.join(" "))
+        findCategory = await Word.findOne({
+            master: prediction
+        })
+        res.status(200).json({
+            message: `Kalimat master paling sesuai adalah '${prediction}' yang terletak pada Kategori: '${findCategory["category"]}' pada posisi ${findCategory["position"]}`,
+            keyword: findCategory["keyword"]
+        })
+    } else{
+        res.status(400).json({
+            message: "Something gone horribly wrong!"
+        })
+        throw new Error("Something gone horribly wrong!")
+    }
 })
 
 module.exports = {
@@ -408,7 +488,8 @@ module.exports = {
     deleteMaster,
     updateMaster,
     findWordByKeyword,
-    naiveBayer,
-    naiveBayerInit,
-    compareAllAlgorithm
+    naiveBayes,
+    naiveBayesInit,
+    compareAllAlgorithm,
+    sorencentNaiveBayes
 }
