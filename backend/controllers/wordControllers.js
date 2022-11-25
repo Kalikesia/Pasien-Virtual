@@ -302,10 +302,11 @@ const registerMaster = asyncHandler(async (req, res) => {
 
     if(processedWord.length < 10){
         for(let i = processedWord.length; i < 10; i++){
-            processedWord.push(null)
+            processedWord.push("")
         }
     }
 
+    console.log(processedWord)
     const word = await Word.create({
         category,
         master: processedMaster,
