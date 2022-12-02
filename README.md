@@ -8,74 +8,57 @@ Sørensen–Dice coefficient adalah statistik yang digunakan untuk mengukur kesa
 
 Naive Bayes Classification adalah pengklasifikasian probabilistik sederhana berdasarkan penerapan teorema Bayes dengan asumsi kuat antara figur[2], dalam aplikasi ini digunakan untuk mencocokkan kalimat dengan kelompok pertanyaan perawat yang ditanyakan.
 
-Ada 9 Algoritma yang ada di Pasien Virtual SMART-PASIVIK, yakni 
-1. compareWord, digunakan untuk mengecek kesamaan kalimat dengan Dice's Coefficient
-2. registerMaster, digunakan untuk memasukkan kata master baru
-3. findWordByKeyword, digunakan untuk mencari kata master paling cocok dengan kalimat yang dikirim
-4. findBestMatch, digunakan untuk kata master yang paling cocok dengan kata yang dimasukkan
-5. displayDatabase, digunakan untuk mengambil database yang aktif
-6. deleteMaster, digunakan untuk digunakan untuk menghapus kata master tertentu yang terdapat di database
-7. updateMaster, digunakan untuk digunakan untuk memperbarui kata master tertentu yang terdapat di database
-8. naiveBayes, digunakan untuk mengecek kesamaan kata menggunakan Naive Bayes.
-9. compareAllAlgorithm, digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayes.
+Terdapat 5 algoritma yang dapat digunakan pada API Pasien Virtual SMART-PASIVIK, yakni 
+1. findWordByKeyword, digunakan untuk mencari kata master paling cocok dengan kalimat yang dikirim menggunakan algoritma Keyword Matching lalu Dice's Coefficient
+2. findBestMatch, digunakan untuk kata master yang paling cocok dengan kata yang dimasukkan menggunakan algoritma Dice's Coefficient lalu Keyword Matching
+3. naiveBayes, digunakan untuk mengecek kesamaan kata menggunakan Naive Bayes.
+4. compareAllAlgorithm, digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayes.
+5. sorencentNaiveBayes, digunakan digunakan untuk mengecek kesamaan kata menggunakan gabungan Keyword Matching, Dice's Coefficient, dan Naive Bayes (Algoritma Utama!)
+
+Terdapat 4 fungsi yang digunakan untuk CRUD pada database, yakni
+1. registerMaster, digunakan untuk memasukkan kata master baru
+2. displayDatabase, digunakan untuk mengambil database yang aktif
+3. deleteMaster, digunakan untuk digunakan untuk menghapus kata master tertentu yang terdapat di database
+4. updateMaster, digunakan untuk digunakan untuk memperbarui kata master tertentu yang terdapat di database
+
 
 ## Flowchart
 Flowchart yang terdapat di Pasien Virtual SMART-PASIVIK adalah sebagai berikut
-### 1. compareWord
+
+### 1. registerMaster
 Flowchart 1
 
-### 2. registerMaster
+### 2. findWordByKeyword
 Flowchart 2
 
-### 3. findWordByKeyword
+### 3. findBestMatch
 Flowchart 3
 
-### 4. findBestMatch
+### 4. displayDatabase
 Flowchart 4
 
-### 5. displayDatabase
+### 5. deleteMaster
 Flowchart 5
 
-### 6. deleteMaster
+### 6. updateMaster
 Flowchart 6
 
-### 7. updateMaster
+### 7. naiveBayes
 Flowchart 7
 
-### 8. naiveBayes
+### 8. compareAllAlgorithm
 Flowchart 8
 
-### 9. compareAllAlgorithm
+### 9. sorencentNaiveBayes
 Flowchart 9
 
 # API Pasien Virtual
-API Pasien Virtual Pasifik ada 9, yakni `compareWord`, `registerMaster`, `findWordByKeyword`, `findBestMatch`, `displayDatabase`, `deleteMaster`, `updateMaster`, `naiveBayes`, dan `compareAllAlgorithm`.
+API Pasien Virtual Pasifik ada 9, yakni `registerMaster`, `findWordByKeyword`, `findBestMatch`, `displayDatabase`, `deleteMaster`, `updateMaster`, `naiveBayes`, `compareAllAlgorithm`, dan `sorencentNaiveBayes`
 
-## 1. compareWord
-compareWord digunakan untuk mengecek kesamaan kalimat dengan Dice's Coefficient. 
-
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/compare`
-### Cara Penggunaan API
-Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
-```
-{
-  "master": "master adalah"
-  "keyword": "keyword adalah"
-  ”child”: ”child adalah”
-}
-```
-API akan memberi JSON dengan format dibawah ini
-```
-{
-  "similarityScore": "skor adalah",
-  "keywordChecker": "nilai kebenaran adalah"
-}
-```
-
-## 2. registerMaster
+## 1. registerMaster
 registerMaster digunakan untuk memasukkan kata master baru 
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/register`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/word/register`
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
 ```
@@ -98,10 +81,10 @@ API akan memberi JSON dengan format dibawah ini
 }
 ```
 
-## 3. findWordByKeyword
+## 2. findWordByKeyword
 findWordByKeyword digunakan untuk mencari kata master paling cocok dengan kalimat yang dikirim
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/match`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/algorithm/sorencent`
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
 ```
@@ -112,17 +95,17 @@ Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti 
 API akan memberi JSON dengan format dibawah ini
 ```
 {
-  "message":"pesan",
-  "keyword":"kata kunci",
-  "keywordBoolean":"kebenaran kata kunci",
-  "result":"hasil"
+  "message": "Kalimat Terbaik Menggunakan Keyword Matching + Dice Coefficient dan Posisinya",
+  "keyword": "Keyword dari Kalimat Terdeteksi Menurut Algoritma",
+  "keywordBoolean": "Kebenaran Kata Kunci",
+  "result": "Kebenaran dari Input User"
 }
 ```
 
-## 4. findBestMatch
+## 3. findBestMatch
 findBestMatch digunakan untuk mencari kata master paling cocok dengan kalimat yang dikirim
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/legacyMatch`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/algorithm/legacySorencent`
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
 ```
@@ -133,26 +116,26 @@ Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti 
 API akan memberi JSON dengan format dibawah ini
 ```
 {
-  "message":"pesan",
-  "keyword":"kata kunci",
-  "keywordBoolean":"kebenaran kata kunci",
-  "result":"hasil"
+  "message": "Kalimat Terbaik Menggunakan Dice Coefficient + Keyword Matching dan Posisinya",
+  "keyword": "Keyword dari Kalimat Terdeteksi Menurut Algoritma",
+  "keywordBoolean": "Kebenaran Kata Kunci",
+  "result": "Kebenaran dari Input User"
 }
 ```
  
-## 5. displayDatabase
+## 4. displayDatabase
 displayDatabase digunakan untuk mengambil database yang aktif
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/displayDB`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/word/displayDB`
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan GET JSON
 
 API akan memberi JSON yang berisi database
 
-## 6. deleteMaster
+## 5. deleteMaster
 deleteMaster digunakan untuk digunakan untuk menghapus kata master tertentu yang terdapat di database
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/delete/:id` dengan :id adalah nomor id kata master yang ingin dihapus
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/word/delete/:id` dengan :id adalah nomor id kata master yang ingin dihapus
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan DELETE JSON
@@ -164,10 +147,10 @@ API akan memberi JSON dengan format dibawah ini
 }
 ```
 
-## 7. updateMaster
+## 6. updateMaster
 updateMaster digunakan untuk digunakan untuk memperbarui kata master tertentu yang terdapat di database
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/update/:id` dengan :id adalah nomor id kata master yang ingin diperbarui
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/word/update/:id` dengan :id adalah nomor id kata master yang ingin diperbarui
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan PUT JSON dengan format seperti dibawah
@@ -183,10 +166,10 @@ API akan memberi JSON dengan format dibawah ini
 }
 ```
  
-## 8. naiveBayes
+## 7. naiveBayes
 naiveBayes digunakan untuk mengecek kesamaan kata menggunakan Naive Bayes.
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/naiveBayes`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/algorithm/naiveBayes`
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
@@ -198,16 +181,15 @@ Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti 
 API akan memberi JSON dengan format dibawah ini
 ```
 {
-  "message":"pesan",
-  "keyword":"kata kunci",
-  "keywordBoolean":"kebenaran kata kunci"
+  "message": "Kalimat Terbaik Menggunakan Naive Bayes dan Posisinya",
+  "keyword": "Keyword dari Kalimat Terdeteksi Menurut Algoritma"
 }
 ```
 
-## 9. compareAllAlgorithm
+## 8. compareAllAlgorithm
 compareAllAlgorithm digunakan untuk mengecek kesamaan kata menggunakan semua algoritma di Pasien Virtual SMART-PASIVIK, yakni Dice's Coefficient dan Naive Bayes
 
-Dapat diakses dengan link `https://smart-pasivik-wma.herokuapp.com/api/word/compareAll`
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/api/algorithm/compareAll`
 
 ### Cara Penggunaan API
 Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
@@ -222,6 +204,26 @@ API akan memberi JSON dengan format dibawah ini
   "naiveBayes":"hasil menggunakan Naive Bayes",
   "diceCoefficient":"hasil menggunakan Dice's Coefficient",
   "legacyDiceCoefficient":"hasil menggunakan variasi Dice's Coefficient",
+}
+```
+
+## 9. sorencentNaiveBayes
+sorencentNaiveBayes digunakan untuk mengecek kesamaan kata menggunakan algoritma gabungan di Pasien Virtual SMART-PASIVIK, yakni Keyword Matching, Dice's Coefficient dan Naive Bayes
+
+Dapat diakses dengan link `https://virtual.pasivik.kalikesia.id/algorithm/match`
+
+### Cara Penggunaan API
+Penggunaan API dapat dilakukan dengan melakukan POST JSON dengan format seperti dibawah
+```
+{
+  "child": "kalimat"
+}
+```
+API akan memberi JSON dengan format dibawah ini
+```
+{
+  "message": "Kalimat Terbaik Menurut Algoritma dan Posisinya",
+  "keyword": "Keyword dari Kalimat Terdeteksi Menurut Algoritma"
 }
 ```
 
