@@ -140,8 +140,7 @@ const getBiggestElement = asyncHandler(async (masterArray, categoricalArray, pro
 
     const biggestIndex = Math.max(...countingArray)
     if(biggestIndex == 0){
-        res.status(200).json({message: "No word found!"})
-        return next()
+        return "No Word Found!"
     }
 
     const indexofBiggestElement = []
@@ -279,6 +278,11 @@ const sorencentNaiveBayes = asyncHandler(async (req, res) => {
     let categoricalArray = databaseArray["categoricalArray"]
 
     const keywordArray = await getBiggestElement(masterArray, categoricalArray, processedChild)
+    if(keywordArray == "No Word Found!"){
+        res.status(201).json({
+            message: "No Word Found!"
+        })
+    }
 
     const bestMatch = stringSimilarity.findBestMatch(processedChild.join(" "), keywordArray)
     let result = false
@@ -299,7 +303,7 @@ const sorencentNaiveBayes = asyncHandler(async (req, res) => {
             keyword: findCategory["keyword"],
         })
     } else if(!result){
-        prediction = nbc.predict(childProcessed.join(" "))
+        prediction = nbc.predict(processedChild.join(" "))
         findCategory = await Word.findOne({
             master: prediction
         })

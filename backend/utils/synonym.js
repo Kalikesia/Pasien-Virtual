@@ -1,4 +1,8 @@
 const synonyms = {
+
+}
+
+const toUse = {
     "paham": ["tahu", "mengerti"],
     "periksa": ["cek", "lihat", "cocok"],
     "beda": ["lain"],

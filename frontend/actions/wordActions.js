@@ -37,7 +37,7 @@ export const findBestMatch = (word) => async (dispatch, getState) => {
       type: BESTACCURACY_DISPLAY_REQUEST,
     });
 
-    const { data } = await axios.post(`/api/word/compareAll`, {
+    const { data } = await axios.post(`/api/algorithm/match`, {
       child: word
     });
     dispatch({

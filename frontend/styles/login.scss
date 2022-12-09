@@ -258,7 +258,8 @@ p.sub-title{
             padding: 5px;
             font-size: 1rem;
             font-weight: 300;
-            background: transparent;
+            background: rgba(0,0,0,0.4);
+            border-radius: 5px;
             border-bottom: 2px solid rgba(255,255,255, 0.4);
             transition: 0.3s all ease-in-out;
             margin-bottom: 2rem;
