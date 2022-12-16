@@ -38,18 +38,18 @@ DEKLARASI:
 DESKRIPSI:
 	Read(master, keyword, child)
 	processedMasterText <- textProcessing(master)
-    processedChildText <- textProcessing(child)
-    processedKeyword <- textProcessing(keyword)
-
-    keywordChecker <- keywordMatching(processedKeyword, processedChildText)
-
-    If (master and keyword and child) Then
-        similarityScore <- CompareTwoString(processedMasterText, processedChildText)
+	processedChildText <- textProcessing(child)
+	processedKeyword <- textProcessing(keyword)
+	
+	keywordChecker <- keywordMatching(processedKeyword, processedChildText)
+	
+	If (master and keyword and child) Then
+		similarityScore <- CompareTwoString(processedMasterText, processedChildText)
 		
 		Write(similarityScore, keywordChecker)
-    Else
-        Write("Please Fill All the Form!")
-    Endif
+    	Else
+        	Write("Please Fill All the Form!")
+    	Endif
 ```
 
 ### 2. registerMaster
@@ -69,9 +69,9 @@ DESKRIPSI:
 	Endfor
 	
 	processedWord <- cleanedWords
-    processedMaster <- textProcessing(master)
+    	processedMaster <- textProcessing(master)
 
-    If length(processedWord) < 10
+    	If length(processedWord) < 10
 		Repeat
 			processedWord.push(null)
 		Until length(processedWord) == 10
@@ -101,63 +101,63 @@ DEKLARASI:
 	result = boolean
 	
 DESKRIPSI:
-    childSynonym = replaceSynonym(child)
-    processedChild = textProcessing(childSynonym)
+	childSynonym = replaceSynonym(child)
+	processedChild = textProcessing(childSynonym)
 
-    If isi child kosong {
-        Write("Form is not populated!")
+    	If isi child kosong {
+        	Write("Form is not populated!")
 		RETURN Error()
-    Endif
+    	Endif
 
-    wordMaster = Word.find()
-    For word in WordMaster 
+    	wordMaster = Word.find()
+    	For word in WordMaster 
 		masterArray.push(word["master"])
-        categoricalArray.push(word["keyword"])
-        For variasi in word["varians"]
-            masterArray.push(variasi)
-        Endfor
-    Endfor
-    
-    For kategori in categoricalArray
-        countingArray.push(keywordCounting(textProcessing(kategori), processedChild))
-    Endfor
-
-    biggestIndex = Math.max(...countingArray)
-    If (biggestIndex == 0)
-        Write("No word found!")
-        Return Next()
-    Endif
+        	categoricalArray.push(word["keyword"])
+        	For variasi in word["varians"]
+            		masterArray.push(variasi)
+        	Endfor
+    	Endfor
 	
-    For hitung in countingArray
-        If hitung === biggestIndex
-            indexofBiggestElement.push(hitung);
-        Endif
-    Endfor
+	For kategori in categoricalArray
+		countingArray.push(keywordCounting(textProcessing(kategori), processedChild))
+    	Endfor
+
+	biggestIndex = Math.max(...countingArray)
+	If (biggestIndex == 0)
+        	Write("No word found!")
+        	Return Next()
+    	Endif
+	
+    	For hitung in countingArray
+		If hitung === biggestIndex
+            		indexofBiggestElement.push(hitung);
+        	Endif
+    	Endfor
     
-    For index in indexofBiggestElement
-        For j = indexofBiggestElement[i] * 11 to indexofBiggestElement[i] * 11 + 11
-            If (masterArray[j] != "")
-                keywordArray.push(masterArray[j])
-            Endif
-        Endfor
-    Endfor
-    bestMatch = stringSimilarity.findBestMatch(processedChild, keywordArray)
-    findCategory = Word.findOne(varians, bestMatch["bestMatch"]["target"])
-    If (findCategory == null)
-        findCategory = await Word.findOne(master, bestMatch["bestMatch"]["target"])
-    Endfor
-    keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(replaceSynonym(bestMatch["bestMatch"]["target"])))
-    keyword = keywordChecker
-    result = false
-    If bestMatch["bestMatch"]["rating"]*100 > 70
-        result = true
-    Endif
-    If bestMatch ditemukan
-        Write(`Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`, findCategory["keyword"], keyword, result)
-    Else
-        Write("Something gone horribly wrong!")
-        RETURN Error("Something gone horribly wrong!")
-    }
+    	For index in indexofBiggestElement
+        	For j = indexofBiggestElement[i] * 11 to indexofBiggestElement[i] * 11 + 11
+            		If (masterArray[j] != "")
+                		keywordArray.push(masterArray[j])
+            		Endif
+        	Endfor
+    	Endfor
+	bestMatch = stringSimilarity.findBestMatch(processedChild, keywordArray)
+    	findCategory = Word.findOne(varians, bestMatch["bestMatch"]["target"])
+    	If (findCategory == null)
+        	findCategory = await Word.findOne(master, bestMatch["bestMatch"]["target"])
+    	Endfor
+    	keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(replaceSynonym(bestMatch["bestMatch"]["target"])))
+    	keyword = keywordChecker
+    	result = false
+    	If bestMatch["bestMatch"]["rating"]*100 > 70
+        	result = true
+    	Endif
+    	If bestMatch ditemukan
+        	Write(`Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`, findCategory["keyword"], keyword, result)
+    	Else
+        	Write("Something gone horribly wrong!")
+        	RETURN Error("Something gone horribly wrong!")
+    	Endif
 ```
 
 ### 4. findBestMatch
@@ -186,17 +186,17 @@ DEKLARASI:
 	
 DESKRIPSI:
 	Read(id)
-    If id ditemukan
-        deleteID = Word.findById(id)
-        If deleteID ditemukan
-            remove(deleteID)
-            Write(`Master with id: ${id} Has Been Removed!`)
-        Else
-            Write("Something Went Very Wrong!")
-        Endif
-    Else
-        Write("Parameter is Needed for This Command!")
-    Endif
+    	If id ditemukan
+        	deleteID = Word.findById(id)
+        	If deleteID ditemukan
+            		remove(deleteID)
+            		Write(`Master with id: ${id} Has Been Removed!`)
+        	Else
+            		Write("Something Went Very Wrong!")
+        	Endif
+    	Else
+        	Write("Parameter is Needed for This Command!")
+    	Endif
 ```
 
 ### 7. updateMaster
@@ -211,18 +211,18 @@ DEKLARASI:
 DESKRIPSI:
 	Read(id, keyword)
 
-    If id and keyword ditemukan
-        updateID = Word.findById(id)
-        If updateID ditemukan
-            updateID.keyword = keyword
-            save(updateID)
-            Write(`Master ID: ${id} Has Been Updated With '${keyword}' as the New Keyword`)
-        Else
-            Write("Something Went Very Wrong!")
-        Endif
-    Else
+    	If id and keyword ditemukan
+        	updateID = Word.findById(id)
+        	If updateID ditemukan
+            		updateID.keyword = keyword
+            		save(updateID)
+            		Write(`Master ID: ${id} Has Been Updated With '${keyword}' as the New Keyword`)
+        	Else
+        	    	Write("Something Went Very Wrong!")
+        	Endif
+    	Else
         Write(`Please Fill All the Form!`)
-    Endif
+    	Endif
 ```
 
 ### 8. naiveBayes
