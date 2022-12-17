@@ -1,6 +1,26 @@
 const asyncHandler = require('express-async-handler')
-const Word = require('../models/wordModel');
+const Word = require('../models/wordModel')
 const Raw = require('../models/rawModel')
+const sastrawi = require("sastrawijs"); 
+const { removeStopwords } = require('stopword')
+const { ind } = require('../utils/dictionary')
+
+function textProcessing(text){
+    let stemmed = []
+    let stemmer = new sastrawi.Stemmer()
+    let tokenizer = new sastrawi.Tokenizer()
+
+    words = tokenizer.tokenize(text)
+
+    for(let i = 0; i < words.length; i++){
+        stemmed.push(stemmer.stem(words[i]))
+    }
+
+    let cleanedWords = removeStopwords(stemmed, ind)
+    let processedWords = [...new Set(cleanedWords)]
+
+    return processedWords
+}
 
 const displayDatabase = asyncHandler(async (req, res) => {
     const data = await Word.find()
