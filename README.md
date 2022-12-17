@@ -4,9 +4,9 @@ Pasien Virtual SMART-PASIVIK adalah
 ## Algoritma Pasien Virtual
 Algoritma Pasien Virtual SMART-PASIVIK umumnya menggunakan Sørensen–Dice's Coefficient dan Naive Bayes. 
 
-Sørensen–Dice coefficient adalah statistik yang digunakan untuk mengukur kesamaan dua sampel[1], dalam aplikasi ini digunakan untuk mencari kata kunci yang terdapat pada pesan yang dikirim dengan mencocokkan kata yang dimasukkan dengan kata kunci yang terdapat di database.
+Sørensen–Dice coefficient adalah statistik yang digunakan untuk mengukur kesamaan dua sampel, dalam aplikasi ini digunakan untuk mencari kata kunci yang terdapat pada pesan yang dikirim dengan mencocokkan kata yang dimasukkan dengan kata kunci yang terdapat di database.
 
-Naive Bayes Classification adalah pengklasifikasian probabilistik sederhana berdasarkan penerapan teorema Bayes dengan asumsi kuat antara figur[2], dalam aplikasi ini digunakan untuk mencocokkan kalimat dengan kelompok pertanyaan perawat yang ditanyakan.
+Naive Bayes Classification adalah pengklasifikasian probabilistik sederhana berdasarkan penerapan teorema Bayes dengan asumsi kuat antara figur, dalam aplikasi ini digunakan untuk mencocokkan kalimat dengan kelompok pertanyaan perawat yang ditanyakan.
 
 Terdapat 6 algoritma yang dapat digunakan pada API Pasien Virtual SMART-PASIVIK, yakni 
 1. findWordByKeyword, digunakan untuk mencari kata master paling cocok dengan kalimat yang dikirim menggunakan algoritma Keyword Matching lalu Dice's Coefficient
@@ -161,7 +161,40 @@ DESKRIPSI:
 ```
 
 ### 4. findBestMatch
-Flowchart 4
+	ALGORITMA Mencari kata yang paling cocok
+	DEKLARASI:
+		child, processedChildText = string
+		databaseArray, masterArray = list(string)
+		keywordChecker, keyword = string
+		findCategory = Word
+		result = boolean
+		bestMatch = float
+		
+	DESKRIPSI:
+		Read(child)
+		processedChildText = textProcessing(child)
+
+		databaseArray = getDatabaseArray()
+		masterArray = databaseArray["masterArray"]
+
+		If child is not null
+			bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
+			findCategory = Word.findOne("varians", bestMatch["bestMatch"]["target"])
+			If findCategory is null
+				findCategory = Word.findOne("master", bestMatch["bestMatch"]["target"])
+			Endif
+			keywordChecker = keywordMatching(textProcessing(findCategory["keyword"]), textProcessing(bestMatch["bestMatch"]["target"]))
+			keyword = keywordChecker
+			result = false
+			If (((Math.round(bestMatch["bestMatch"]["rating"]*100)) < 70 || keyword === true) && (Math.round(bestMatch["bestMatch"]["rating"]*100)) > 50)
+				result = true
+			Else If ((Math.round(bestMatch["bestMatch"]["rating"]*100)) >= 70)
+				result = true
+			Endif
+			Write(`Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`, findCategory["keyword"], keyword, result)
+		Else
+			Write("Please Fill All the Form!")
+		Endif
 
 ### 5. displayDatabase
 Pseudocode Fungsi displayDatabase
@@ -226,13 +259,64 @@ DESKRIPSI:
 ```
 
 ### 8. naiveBayes
-Flowchart 8
+Pseudocode Fungsi naiveBayes
+```
+ALGORITMA Mencari kalimat yang paling cocok dengan algoritma NaiveBayes
+DEKLARASI:
+	child, childProcessed, prediction = string
+	findCategory = Word
+	
+DESKRIPSI:
+	Read(child)
+	childProcessed = textProcessing(replaceSynonym(child))
+	prediction = nbc.predict(childProcessed)
+	findCategory = Word.findOne("master", prediction)
+	Write(`Kalimat master paling sesuai adalah '${prediction}' yang terletak pada Kategori: '${findCategory["category"]}' pada posisi ${findCategory["position"]}`, findCategory["keyword"])
+```
 
 ### 9. compareAllAlgorithm
-Flowchart 9
+Pseudocode Fungsi compareAllAlgorithm
+```
+ALGORITMA Membandingkan kalimat dengan algoritma yang tersedia (naiveBayes, diceCoefficientResult, dan legacyDiceCoefficientResult)
+DEKLARASI:
+	child, processedChildText = string
+	naiveBayes, diceCoefficientResult, legacyDiceCoefficientResult = int
+	
+DESKRIPSI:
+	Read(child)
+	processedChildText = textProcessing(child)
+	naiveBayes = axios.post(`https://virtual.pasivik.kalikesia.id/api/algorithm/naiveBayes`, processedChildText)
+    	diceCoefficientResult = axios.post(`https://virtual.pasivik.kalikesia.id/api/algorithm/sorencent`, processedChildText)
+    	legacyDiceCoefficientResult = axios.post(`https://virtual.pasivik.kalikesia.id/api/algorithm/legacySorencent`, processedChildText)
+    	Write(naiveBayes.data["message"], diceCoefficientResult.data["message"], legacyDiceCoefficientResult.data["message"])
+```
 
 ### 10. sorencentNaiveBayes
-Flowchart 10
+Pseudocode Fungsi sorencentNaiveBayes
+```
+ALGORITMA Mencari kalimat yang paling cocok dengan algoritma sorencentNaiveBayes
+DEKLARASI:
+	child, childSynonym, processedChild = string
+	databaseArray, masterArray, categoricalArray, keywordArray = list(string)
+	
+DESKRIPSI:
+	Read(child)
+	childSynonym = replaceSynonym(child)
+	processedChild = textProcessing(childSynonym)
+
+    	If child is empty Or child is space
+		Return Error("Form is not populated!")
+	Endif
+
+    	databaseArray = getDatabaseArray()
+    	masterArray = databaseArray["masterArray"]
+    	categoricalArray = databaseArray["categoricalArray"]
+
+    	keywordArray = getBiggestElement(masterArray, categoricalArray, processedChild)
+    	If keywordArray is "No Word Found!"
+        	Write("No Word Found!")
+    	Endif
+```
 
 # API Pasien Virtual
 API Pasien Virtual Pasifik ada 10, yakni `compareWord`, `registerMaster`, `findWordByKeyword`, `findBestMatch`, `displayDatabase`, `deleteMaster`, `updateMaster`, `naiveBayes`, `compareAllAlgorithm`, dan `sorencentNaiveBayes`
@@ -429,11 +513,3 @@ API akan memberi JSON dengan format dibawah ini
   "keyword": "Keyword dari Kalimat Terdeteksi Menurut Algoritma"
 }
 ```
-
-# Isu
-Isu yang ada
-- (belum ada)
-
-
-# Referensi
-1. 
