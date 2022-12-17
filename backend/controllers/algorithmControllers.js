@@ -29,6 +29,9 @@ const naiveBayesInit = asyncHandler(async (req, res) => {
     }
     nbc.consolidate()
     console.log("Naive Bayer Model is Done Learning!")
+    res.json({
+        message: "Model have been Retrained!"
+    })
 })
 
 naiveBayesInit()
@@ -320,6 +323,7 @@ const sorencentNaiveBayes = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+    naiveBayesInit,
     findBestMatch,
     findWordByKeyword,
     naiveBayes,
