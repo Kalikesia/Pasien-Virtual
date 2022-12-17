@@ -1,8 +1,4 @@
 const synonyms = {
-
-}
-
-const toUse = {
     "paham": ["tahu", "mengerti"],
     "periksa": ["cek", "lihat", "cocok"],
     "beda": ["lain"],
@@ -54,6 +50,10 @@ const toUse = {
     "sering": ["kerap", "rajin", "selalu", "frekuensi"],
     "komunitas": ["kelompok", "paguyuban", "populasi", "perkumpulan", "golongan"],
     "respon": ["tanggapan", "perlakuan"]
+}
+
+const toUse = {
+
 }
 
 module.exports = {synonyms}
