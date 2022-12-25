@@ -1,5 +1,5 @@
 # Pasien-Virtual
-Pasien Virtual SMART-PASIVIK adalah
+Pasien Virtual SMART-PASIVIK adalah Aplikasi rekomendasi pembelajaran otomatis untuk meningkatkan kompetesi tenaga perawat.
 
 ## Algoritma Pasien Virtual
 Algoritma Pasien Virtual SMART-PASIVIK umumnya menggunakan Sørensen–Dice's Coefficient dan Naive Bayes. 
