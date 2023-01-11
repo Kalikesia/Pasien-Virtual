@@ -33,4 +33,4 @@ jobs:
         remote_path: "${{ secrets.VIRTUAL_DEPLOY_PATH }}"
         remote_host: "${{ secrets.VIRTUAL_STAGING_DEPLOY_HOST }}"
         remote_user: "${{ secrets.VIRTUAL_DEPLOY_USER }}"
-        remote_key: "${{ secrets.VIRTUAL_DEPLOY_SECRET }}"
+        remote_key: "${{ secrets.VIRTUAL_STAGING_DEPLOY_SECRET }}"
