@@ -1,10 +1,10 @@
-name: Node.js CI
+name: Staging Pasien Virtual
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "development" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "development" ]
     
   workflow_dispatch:
 
@@ -31,6 +31,6 @@ jobs:
         switches: -avzr --delete
         path: ./*
         remote_path: "${{ secrets.VIRTUAL_DEPLOY_PATH }}"
-        remote_host: "${{ secrets.VIRTUAL_DEPLOY_HOST }}"
+        remote_host: "${{ secrets.VIRTUAL_STAGING_DEPLOY_HOST }}"
         remote_user: "${{ secrets.VIRTUAL_DEPLOY_USER }}"
         remote_key: "${{ secrets.VIRTUAL_DEPLOY_SECRET }}"
