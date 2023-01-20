@@ -225,7 +225,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
 
     const databaseArray = await getDatabaseArray(req.body.study_case_id)
     let masterArray = databaseArray["masterArray"]
-
+    
     if(child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
         const basurl = process.env.BASEURL_API
@@ -253,6 +253,10 @@ const findBestMatch = asyncHandler(async (req, res) => {
         res.status(201).json({
             master: findCategory["master"],
             answer: findCategory["answer"],
+            position: findCategory["position"],
+            order_by_user: req.body.order_by_user,
+            answer_true_or_false: findCategory["answer_true_or_false"],
+            bobot_score: findCategory["score"],
             id: findCategory["id"],
         })
     } else{
