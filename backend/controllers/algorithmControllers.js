@@ -251,6 +251,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
         //     result: result
         // })
         res.status(201).json({
+            category: findCategory["category"],
             master: findCategory["master"],
             answer: findCategory["answer"],
             position: findCategory["position"],
