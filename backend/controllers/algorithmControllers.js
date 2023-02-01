@@ -258,6 +258,7 @@ const findBestMatch = asyncHandler(async (req, res) => {
             order_by_user: req.body.order_by_user,
             answer_true_or_false: findCategory["answer_true_or_false"],
             bobot_score: findCategory["score"],
+            recommended: findCategory["recommended"],
             id: findCategory["id"],
         })
     } else{
