@@ -34,7 +34,6 @@ const naiveBayesInit = asyncHandler(async (req, res) => {
             message: "Model have been Retrained!"
         })
     }
-    
 })
 
 naiveBayesInit()
@@ -128,10 +127,8 @@ const getDatabaseArray = asyncHandler(async (idSC, req, res) => {
     let categoricalArray = []
     // const wordMaster = await Word.find()
     const basurl = process.env.BASEURL_API
-    // API BE
     const getDataAPI = await axios.get(basurl+"api/study_case/asked/data/"+idSC)
     const wordMaster = getDataAPI.data.data
-    
     for(let i = 0; i < wordMaster.length; i++){
         masterArray.push(wordMaster[i]["master"])
         categoricalArray.push(wordMaster[i]["keyword"])
@@ -223,16 +220,22 @@ const findBestMatch = asyncHandler(async (req, res) => {
     const { child } = req.body
     let processedChildText = textProcessing(child)
 
+    // const databaseArray = await getDatabaseArray()
     const databaseArray = await getDatabaseArray(req.body.study_case_id)
     let masterArray = databaseArray["masterArray"]
     
     if(child){
         const bestMatch = stringSimilarity.findBestMatch(processedChildText.join(" "), masterArray)
+        // let findCategory = await Word.findOne({
+        //     varians: bestMatch["bestMatch"]["target"]
+        // })
         const basurl = process.env.BASEURL_API
         const findDataVarians = await axios.post(basurl+"api/study_case/asked/varian/"+req.body.study_case_id, {varian: bestMatch["bestMatch"]["target"]})
         let findCategory = findDataVarians.data.data
-
         if(findCategory === null){
+            // findCategory = await Word.findOne({
+            //     master: bestMatch["bestMatch"]["target"]
+            // })
             const findDataMaster = await axios.post(basurl+"api/study_case/asked/varian/"+req.body.study_case_id+"?type=master", {varian: bestMatch["bestMatch"]["target"]})
             findCategory = findDataMaster.data.data
         }
@@ -251,6 +254,10 @@ const findBestMatch = asyncHandler(async (req, res) => {
         //     result: result
         // })
         res.status(201).json({
+            // message: `Kalimat paling sesuai adalah '${bestMatch["bestMatch"]["target"]}' dengan master '${findCategory["master"]}' yang terletak pada Kategori: '${findCategory["category"]}' dengan akurasi sebesar ${Math.round(bestMatch["bestMatch"]["rating"]*100)}% pada posisi ${findCategory["position"]}`,
+            // keyword: findCategory["keyword"],
+            // keywordBoolean: keyword,
+            // result: result,
             category: findCategory["category"],
             master: findCategory["master"],
             answer: findCategory["answer"],
@@ -296,6 +303,7 @@ const sorencentNaiveBayes = asyncHandler(async (req, res) => {
         throw new Error("Form is not populated!")
     }
 
+    // const databaseArray = await getDatabaseArray()
     const databaseArray = await getDatabaseArray(req.body.study_case_id)
     let masterArray = databaseArray["masterArray"]
     let categoricalArray = databaseArray["categoricalArray"]
